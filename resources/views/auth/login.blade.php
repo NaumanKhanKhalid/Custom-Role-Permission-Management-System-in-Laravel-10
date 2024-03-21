@@ -24,7 +24,7 @@
                                                 <input class="form-control" placeholder="Email" name="email" value="{{ old('email', session('email')) }}">
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Password</label>
@@ -49,9 +49,7 @@
                                         <button class="btn btn-primary btn-block" type="submit">Login</button>
                                     </div>
                                     <div class="text-center mt-3">
-                                        <p class="mb-2"><a href="#">Forgot Password</a></p>
-                                        <p class="text-dark mb-0">Don't have account?<a class="text-primary ms-1"
-                                                href="#">Register</a></p>
+                                        <p class="mb-2"><a href="{{ route('show.forget.form') }}">Forgot Password</a></p>
                                     </div>
                                 </form>
                                 <div class="card-body border-top-0 pb-6 pt-2">

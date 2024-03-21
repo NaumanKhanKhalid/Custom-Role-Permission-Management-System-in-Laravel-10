@@ -1,4 +1,4 @@
-@extends('dashboard.auth.app')
+@extends('auth.layouts.app')
 @section('content')
 <div class="page login-bg">
     <div class="page-single">
@@ -12,7 +12,9 @@
                                     <h1 class="mb-2">Forgot Password</h1>
                                     <p class="text-muted">Enter the email address registered on your account</p>
                                 </div>
-                                <form class="card-body pt-3" id="forgot" name="forgot">
+                                <form action="{{ route('forget.password') }}" method="POST" class="card-body pt-3">
+                                    @csrf
+
                                     <div class="form-group">
                                         <label class="form-label">E-Mail</label>
                                         <div class="input-group mb-4">
@@ -20,24 +22,18 @@
                                                 <span class="input-group-text">
                                                     <i class="fe fe-mail""></i>
                                                 </span>
-                                                <input class="form-control" placeholder="Email">
+                                                <input class="form-control" placeholder="Email" name="email">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="submit">
-                                        <a class="btn btn-primary btn-block" href="#">Submit</a>
+                                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
                                     </div>
                                     <div class="text-center mt-4">
-                                        <p class="text-dark mb-0">Forgot It?<a class="text-primary ms-1" href="#">Send me Back</a></p>
+                                        <p class="text-dark mb-0">Forgot It?<a class="text-primary ms-1" href="{{ route('login') }}">Send me Back</a></p>
                                     </div>
                                 </form>
-                                <div class="card-body border-top-0 pb-6 pt-2">
-                                    <div class="text-center">
-                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-facebook-line"></i></span>
-                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-instagram-line"></i></span>
-                                        <span class="avatar brround me-3 bg-primary-transparent text-primary"><i class="ri-twitter-line"></i></span>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>

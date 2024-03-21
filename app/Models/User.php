@@ -13,7 +13,7 @@ class User extends Authenticatable
 
 {
 
-use HasApiTokens, SoftDeletes;
+    use HasApiTokens, SoftDeletes, Notifiable;
 
     protected $fillable = [
         'name',
@@ -33,7 +33,4 @@ use HasApiTokens, SoftDeletes;
     {
         return $this->hasOne(UserBasicInformation::class, 'user_id');
     }
-
-
-
 }

@@ -16,12 +16,16 @@ Route::get('/', function () {
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('showLoginForm');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
-// Authenticated Routes
+
+Route::get('forget-password', [AuthController::class, 'showForgetForm'])->name('show.forget.form');
+Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forget.password');
+Route::get('reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+
+Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 Route::middleware('auth.check')->group(function () {
 
-    // Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('permission.check:1234');
-    Route::get('dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
     // ========== User Module Routes Start ==========
