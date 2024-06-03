@@ -11,7 +11,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
         $authUser = User::with('role')->where('id', Auth::user()->id)->first();
         return view('dashboard.index', compact('authUser'));
     }

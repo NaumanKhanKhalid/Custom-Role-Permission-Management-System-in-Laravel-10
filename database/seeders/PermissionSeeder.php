@@ -7,18 +7,18 @@ use App\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
         $permissions = [
             ['name' => 'create_user'],
             ['name' => 'view_users'],
             ['name' => 'edit_user'],
             ['name' => 'delete_user'],
+            ['name' => 'create_service'],
+            ['name' => 'view_services'],
+            ['name' => 'edit_service'],
+            ['name' => 'delete_service'],
         ];
-
 
         Permission::insert($permissions);
     }

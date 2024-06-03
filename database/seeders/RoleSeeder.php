@@ -2,36 +2,23 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder; 
+use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run()
     {
+        $permissions = Permission::all();
 
-        $role = Role::create(
+        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole->permissions()->attach($permissions);
 
-            ['name' => 'Admin']
+        $vendorRole = Role::create(['name' => 'Vendor']);
+        $vendorRole->permissions()->attach($permissions->whereIn('name', ['view_users', 'create_user']));
 
-        );
-
-        $permissions = Permission::all()->pluck('id');
-        $role->permissions()->attach($permissions);
-
-        $userRole = Role::create(
-
-            ['name' => 'User']
-
-        );
-        $userPermissions = [
-
-            1, 2, 3, 4,
-        ];
-        $userRole->permissions()->attach($userPermissions);
+        $clientRole = Role::create(['name' => 'Client']);
+        $clientRole->permissions()->attach($permissions->whereIn('name', ['view_users']));
     }
 }

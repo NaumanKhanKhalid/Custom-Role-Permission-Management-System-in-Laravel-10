@@ -1,4 +1,3 @@
-@section('title', 'Users')
 @extends('dashboard.layouts.app')
 @section('content')
 <div class="app-content main-content">

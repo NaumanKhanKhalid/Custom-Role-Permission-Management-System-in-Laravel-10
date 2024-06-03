@@ -49,16 +49,16 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users,email',
         ]);
 
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
 
-        if ($status === Password::RESET_LINK_SENT) {
+        if (Password::sendResetLink(
+            $request->only('email')
+        )) {
             return back()->with('success', 'Password reset link sent! Please check your email.');
         } else {
-            return back()->withErrors(['email' => __($status)]);
+            return back()->withErrors(['error' => 'Unable to send password reset link. Please try again later.']);
         }
     }
+
 
     public function showResetForm($token)
     {

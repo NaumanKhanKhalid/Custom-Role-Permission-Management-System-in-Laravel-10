@@ -17,14 +17,11 @@ class AuthServiceProvider extends ServiceProvider
         //
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot()
     {
         $this->registerPolicies();
 
-        // ========== Gate for managing user-related permissions Start ==========
+        // ========== Gate for managing user_management-related permissions Start ==========
 
         Gate::define('user_management', function ($user, $ability) {
             $permissions = ['view_users', 'create_user', 'edit_user', 'delete_user'];
@@ -34,6 +31,18 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
-        // ========== Gate for managing user-related permissions End ==========
+        // ========== Gate for managing user_management-related permissions End ==========
+
+        // ========== Gate for managing service_management-related permissions Start ==========
+
+        Gate::define('service_management', function ($user, $ability) {
+            $permissions = ['view_services', 'create_service', 'edit_service', 'delete_service'];
+            if ($user->role) {
+                return $user->role->permissions()->whereIn('name', $permissions)->where('name', $ability)->exists();
+            }
+            return false;
+        });
+        // ========== Gate for managing service_management-related permissions End ==========
+
     }
 }

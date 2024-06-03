@@ -33,4 +33,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserBasicInformation::class, 'user_id');
     }
+
+    
 }

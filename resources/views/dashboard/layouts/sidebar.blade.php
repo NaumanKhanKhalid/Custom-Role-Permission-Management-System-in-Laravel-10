@@ -44,9 +44,17 @@
                     @endcan
 
                     <li><a href="{{ route('role.index') }}" class="slide-item">Roles</a></li>
-
                 </ul>
             </li>
+            @can('service_management', 'view_services')
+            <li class="slide">
+                <a class="side-menu__item" href="{{ route('services.index') }}">
+                    <i class="feather feather-home sidemenu_icon"></i>
+                    <span class="side-menu__label"><span class="nav-list">Services</span></span>
+                </a>
+            </li>
+            @endcan
+
             <li class="slide">
                 <a class="side-menu__item" data-bs-toggle="slide" href="#">
                     <i class="feather feather-trash sidemenu_icon"></i>

@@ -6,23 +6,13 @@
     <!-- Meta data -->
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
-    <meta
-        content="DayOne - It is one of the Major Dashboard Template which includes - HR, Employee and Job Dashboard. This template has multipurpose HTML template and also deals with Task, Project, Client and Support System Dashboard."
-        name="description">
-    <meta content="Spruko Technologies Private Limited" name="author">
-    <meta name="keywords"
-        content="admin dashboard, admin panel template, html admin template, dashboard html template, bootstrap 4 dashboard, template admin bootstrap 4, simple admin panel template, simple dashboard html template,  bootstrap admin panel, task dashboard, job dashboard, bootstrap admin panel, dashboards html, panel in html, bootstrap 4 dashboard, bootstrap 5 dashboard, bootstrap5 dashboard" />
-
     <!-- Title -->
-    <title>Dayone - Multipurpose Admin & Dashboard Template</title>
-
+    <title>@yield('title')</title>
     <!--Favicon -->
     <link rel="icon" href="{{ asset('dashboard-assets/assets/images/brand/favicon.ico') }}" type="image/x-icon" />
-
     <!-- Bootstrap css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet"
         id="style" />
-
     <!-- Style css -->
     <link href="{{ asset('dashboard-assets/assets/css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('dashboard-assets/assets/css/boxed.css') }}" rel="stylesheet" />
@@ -46,23 +36,19 @@
 
     <!--- INTERNAL jvectormap css-->
     <link href="{{ asset('dashboard-assets/assets/plugins/jvectormap/jqvmap.css') }}" rel="stylesheet" />
-
-
     <!-- Notifications  Css -->
-    <link href="{{ asset('dashboard-assets/assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+
+    <script src="{{ asset('vendor/flasher/flasher.min.css') }}"></script>
     <!-- INTERNAL Time picker css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/time-picker/jquery.timepicker.css') }}" rel="stylesheet" />
-
     <!-- INTERNAL jQuery-countdowntimer css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/jQuery-countdowntimer/jQuery.countdownTimer.css') }}"
         rel="stylesheet" />
-
     <!-- INTERNAL Data table css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/datatable/css/dataTables.bootstrap5.css') }}"
         rel="stylesheet" />
     <link href="{{ asset('dashboard-assets/assets/plugins/datatable/css/buttons.bootstrap5.min.css') }}"
         rel="stylesheet">
-
     <!-- INTERNAL Datepicker css-->
     <link href="{{ asset('dashboard-assets/assets/plugins/modal-datepicker/datepicker.css') }}" rel="stylesheet" />
     <!-- INTERNAL summernote css -->
@@ -510,8 +496,7 @@
     <script src="{{ asset('dashboard-assets/assets/plugins/chart.min/rounded-barchart.js') }}"></script>
 
     <!-- INTERNAL jQuery-countdowntimer js -->
-    <script src="{{ asset('dashboard-assets/assets/plugins/jQuery-countdowntimer/jQuery.countdownTimer.js') }}">
-    </script>
+    <script src="{{ asset('dashboard-assets/assets/plugins/jQuery-countdowntimer/jQuery.countdownTimer.js') }}"></script>
 
 
     <!-- INTERNAL Datepicker js -->
@@ -536,39 +521,20 @@
 
 
     <!-- Notifications js -->
-    <script src="{{ asset('dashboard-assets/assets/plugins/notify/js/notifIt.js') }}"></script>
+    <script src="{{ asset('vendor/flasher/flasher.min.js') }}"></script>
     <!-- Custom js-->
     <script src="{{ asset('dashboard-assets/assets/js/custom.js') }}"></script>
 
     <script src="{{ asset('dashboard-assets/assets/plugins/rating/js/jquery.barrating.js') }}"></script>
 
-    @if (Session::has('success'))
-    <script>
-        notif({
-                    msg: "<b><i class='fa fa-check fs-20 me-2'></i></b> {!! Session::get('success') !!}",
-                    type: "success"
-                });
-    </script>
-    @endif
-    @if (Session::has('error'))
-    <script>
-        notif({
-                    msg: "<b><i class='fa fa-exclamation-circle fs-20 me-2'></i></b> {!! Session::get('error') !!}",
-                    type: "error"
-                });
-    </script>
-    @endif
 
     @if ($errors->any())
-@foreach ($errors->all() as $error)
-<script>
-    notif({
-        msg: "<b><i class='fa fa-exclamation-circle fs-20 me-2'></i></b> {!! $error !!}",
-        type: "error"
-    });
-</script>
-@endforeach
-@endif
+        @foreach ($errors->all() as $index => $error)
+            <script>
+                flasher.error('{{ $error }}').priority({{ $loop->index + 1 }});
+            </script>
+        @endforeach
+    @endif
 
     @stack('scripts')
 

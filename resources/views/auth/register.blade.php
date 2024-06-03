@@ -1,4 +1,6 @@
+@section('title', 'Register')
 @extends('dashboard.auth.app')
+
 @section('content')
 		<div class="page login-bg">
 			<div class="page-single">

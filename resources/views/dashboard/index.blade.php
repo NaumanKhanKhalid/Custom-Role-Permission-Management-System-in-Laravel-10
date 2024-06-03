@@ -28,7 +28,8 @@
                                         <div class="input-group-text">
                                             <i class="feather feather-clock"></i>
                                         </div>
-                                    </div><!-- input-group-prepend -->
+                                    </div>
+                                    <!-- input-group-prepend -->
                                     <input id="tpBasic" type="text" placeholder="09:30am"
                                         class="form-control input-small">
                                 </div>

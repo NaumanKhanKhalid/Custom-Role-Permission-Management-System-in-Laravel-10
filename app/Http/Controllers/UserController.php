@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Flasher\Prime\FlasherInterface;
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -43,6 +43,7 @@ class UserController extends Controller
         $activeUsersCount = User::where('status', 'Active')->count();
         $inactiveUsersCount = User::where('status', 'Inactive')->count();
         $trashedUsersCount = User::onlyTrashed()->count();
+
         return view('modules.users.index', compact('roles', 'users', 'totalUsersCount', 'activeUsersCount', 'inactiveUsersCount', 'trashedUsersCount'));
     }
 
@@ -50,13 +51,14 @@ class UserController extends Controller
     {
     }
 
-    public function store(UserRequest $request)
+  
+    public function store(UserRequest $request, FlasherInterface $flasher)
     {
 
         try {
-            // Start a database transaction
             DB::beginTransaction();
 
+            $profilePicturePath = null;
             if ($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -64,34 +66,29 @@ class UserController extends Controller
                 $profilePicturePath = 'profile_pictures/' . $imageName;
             }
 
-            // Create the user
             $user = User::create([
-                'email' => $request['email'],
-                'password' => bcrypt($request['password']),
-                'role_id' => $request['role_id'],
-                'status' => $request['status'],
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'role_id' => $request->input('role_id'),
+                'status' => $request->input('status'),
             ]);
 
-            // Create the user Basic Information
-            $userbasicInformation = UserBasicInformation::create([
+            UserBasicInformation::create([
                 'user_id' => $user->id,
-                'first_name' => $request['first_name'],
-                'last_name' => $request['last_name'],
-                'dob' => $request['dob'],
-                'address' => $request['address'],
-                'phone' => $request['phone'],
+                'first_name' => $request->input('first_name'),
+                'last_name' => $request->input('last_name'),
+                'dob' => $request->input('dob'),
+                'address' => $request->input('address'),
+                'phone' => $request->input('phone'),
                 'profile_picture' => $profilePicturePath,
             ]);
 
-            // Commit the transaction
             DB::commit();
 
-            return redirect()->route('user.index')->with('success', 'User created successfully!');
+            return redirect()->route('users.index')->with('success', 'User created successfully!');
         } catch (\Exception $e) {
-            // Something went wrong, rollback the transaction
             DB::rollback();
-            Log::error('User Created' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Failed to create user. Please try again.' . $e);
+            return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.');
         }
     }
 
@@ -114,7 +111,6 @@ class UserController extends Controller
         try {
             DB::beginTransaction();
 
-            // Prepare user data for update
             $userData = [
                 'email' => $request->input('email'),
                 'status' => $request->input('status'),
@@ -124,10 +120,8 @@ class UserController extends Controller
                 $userData['password'] = bcrypt($request->input('password'));
             }
 
-            // Update user data
             $user->update($userData);
 
-            // Prepare basic information data for update
             $basicInfoData = [
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
@@ -136,7 +130,6 @@ class UserController extends Controller
                 'phone' => $request->input('phone'),
             ];
 
-            // Update profile picture if provided
             if ($request->hasFile('profile_picture')) {
                 $userImage = $user->basic_info->profile_picture;
                 if ($userImage) {
@@ -152,20 +145,14 @@ class UserController extends Controller
                 $basicInfoData['profile_picture'] = $profilePicturePath;
             }
 
-            // Update user's basic information
             $userBasicInfo = UserBasicInformation::where('user_id', $user->id)->first();
             $userBasicInfo->update($basicInfoData);
 
-            // Commit the transaction
             DB::commit();
-
-            return redirect()->route('user.index')->with('success', 'User updated successfully!');
+            return redirect()->route('users.index')->with('success', 'User updated successfully!');
         } catch (\Exception $e) {
-            // Rollback the transaction
             DB::rollback();
-            Log::error('User Update Error: ' . $e->getMessage());
-
-            return redirect()->back()->withInput()->with('error', 'Failed to update user. Please try again.');
+            return redirect()->back()->withInput()->with('error', 'Failed to update users. Please try again.');
         }
     }
 
@@ -176,7 +163,7 @@ class UserController extends Controller
             $user->delete();
             return back()->with('success', 'User has been deleted successfully');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Failed to delete user. Please try again.');
+            return back()->with('error', 'Failed to delete users. Please try again.');
         }
     }
 
@@ -197,7 +184,7 @@ class UserController extends Controller
 
         $user = User::withTrashed()->findOrFail($id);
         $user->forceDelete();
-        return redirect()->route('user.index')->with('success', 'User permanently deleted.');
+        return redirect()->route('users.index')->with('success', 'User permanently deleted.');
     }
     public function restoreUser($id)
     {

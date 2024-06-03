@@ -1,3 +1,4 @@
+@section('title', 'User')
 @extends('dashboard.layouts.app')
 @section('content')
 <div class="app-content main-content">
@@ -126,12 +127,15 @@
                         </form>
                     </div>
                     <div class="card-body">
+                       
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap table-bordered border-bottom"
                                 id="project-list">
                                 <thead>
                                     <tr>
-                                        <th class="border-bottom-0">#ID</th>
+                                        <th class="border-bottom-0">#ID 
+                                        
+                                        </th>
                                         <th class="border-bottom-0">Name</th>
 
                                         <th class="border-bottom-0">Email</th>
@@ -180,7 +184,7 @@
 
                                                 @if(request('trashed'))
                                                 <form
-                                                    action="{{ route('users.permanent.delete', ['id' => $user->id]) }}"
+                                                    action="{{ route('user.permanent.delete', ['id' => $user->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -191,7 +195,7 @@
                                                     </button>
                                                 </form>
 
-                                                <form action="{{ route('users.restore', ['id' => $user->id]) }}"
+                                                <form action="{{ route('user.restore', ['id' => $user->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PUT')
@@ -204,17 +208,17 @@
 
                                                 </form>
                                                 @else
-                                                <a href="{{ route('users.show',['user'=> $user]) }}"
+                                                <a href="{{ route('user.show',['user'=> $user]) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="View User"><i
                                                         class="feather feather-eye text-primary"></i></a>
 
 
-                                                <a href="{{ route('users.edit',['user'=> $user]) }}"
+                                                <a href="{{ route('user.edit',['user'=> $user]) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="Edit User"><i
                                                         class="feather feather-edit-2  text-success"></i></a>
-                                                <form action="{{ route('users.destroy', ['user' => $user]) }}"
+                                                <form action="{{ route('user.destroy', ['user' => $user]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -225,7 +229,7 @@
                                                     </button>
                                                 </form>
 
-                                                <form action="{{ route('users.updateStatus', ['user' => $user]) }}"
+                                                <form action="{{ route('user.updateStatus', ['user' => $user]) }}"
                                                     method="post">
                                                     @csrf
                                                     <input type="hidden" name="status"
@@ -256,7 +260,7 @@
         <div class="modal fade" id="newUserModal">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">Add New User</h5>
@@ -269,18 +273,18 @@
                                 <div class="col-md-6">
                                     <label class="form-label">First Name:</label>
                                     <input class="form-control" type="text" name="first_name" placeholder="First Name"
-                                        required>
+                                        >
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Last Name:</label>
                                     <input class="form-control" type="text" name="last_name" placeholder="Last Name"
-                                        required>
+                                        >
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Phone:</label>
-                                    <input class="form-control" type="tel" name="phone" placeholder="Phone" required>
+                                    <input class="form-control" type="tel" name="phone" placeholder="Phone" >
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Date of Birth:</label>
@@ -298,19 +302,19 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Email:</label>
-                                    <input class="form-control" type="email" name="email" placeholder="Email" required>
+                                    <input class="form-control" type="email" name="email" placeholder="Email" >
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Password:</label>
                                     <input class="form-control" type="password" name="password" placeholder="Password"
-                                        required>
+                                        >
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Role:</label>
                                     <select name="role_id" class="form-control custom-select select2"
-                                        data-placeholder="Select Role" required>
+                                        data-placeholder="Select Role" >
                                         <option value="" disabled selected>Select Role</option>
                                         @foreach ($roles as $role)
                                         <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -320,7 +324,7 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Status:</label>
                                     <select name="status" class="form-control custom-select select2"
-                                        data-placeholder="Select Status" required>
+                                        data-placeholder="Select Status" >
                                         <option value="" disabled selected>Select Status</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
@@ -329,7 +333,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label">Address:</label>
-                                <textarea class="form-control" name="address" required></textarea>
+                                <textarea class="form-control" name="address" ></textarea>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Profile Picture:</label>
@@ -348,4 +352,7 @@
         <!-- New User Modal End -->
     </div>
 </div><!-- end app-content-->
+
+
+
 @endsection
