@@ -56,6 +56,11 @@
     <!-- INTERNAL Ratings css -->
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/ratings.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/rating-themes.css') }}">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Icon Picker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/css/fontawesome-iconpicker.min.css">
+  
 </head>
 
 <body class="app sidebar-mini">
@@ -526,6 +531,7 @@
     <script src="{{ asset('dashboard-assets/assets/js/custom.js') }}"></script>
 
     <script src="{{ asset('dashboard-assets/assets/plugins/rating/js/jquery.barrating.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>
 
 
     @if ($errors->any())
@@ -535,7 +541,7 @@
             </script>
         @endforeach
     @endif
-
+    
     @stack('scripts')
 
 </body>

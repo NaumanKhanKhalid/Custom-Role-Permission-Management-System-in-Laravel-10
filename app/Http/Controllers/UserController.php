@@ -12,8 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Flasher\Prime\FlasherInterface;
+
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -37,7 +36,6 @@ class UserController extends Controller
             $query->onlyTrashed();
         }
 
-
         $users = $query->get();
         $totalUsersCount = User::count();
         $activeUsersCount = User::where('status', 'Active')->count();
@@ -50,14 +48,13 @@ class UserController extends Controller
     public function create()
     {
     }
-
   
-    public function store(UserRequest $request, FlasherInterface $flasher)
+    public function store(UserRequest $request)
     {
-
         try {
+            
             DB::beginTransaction();
-
+            
             $profilePicturePath = null;
             if ($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
@@ -73,7 +70,7 @@ class UserController extends Controller
                 'status' => $request->input('status'),
             ]);
 
-            UserBasicInformation::create([
+            $userBasicInformation = UserBasicInformation::create([
                 'user_id' => $user->id,
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
@@ -87,6 +84,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User created successfully!');
         } catch (\Exception $e) {
+            
             DB::rollback();
             return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.');
         }
@@ -94,12 +92,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-
         $user->load('basic_info');
         return view('modules.users.view', compact('user'));
     }
 
-    
     public function edit(User $user)
     {
         $user->load('basic_info');
@@ -156,40 +152,39 @@ class UserController extends Controller
         }
     }
 
-
     public function destroy(User $user)
     {
         try {
             $user->delete();
             return back()->with('success', 'User has been deleted successfully');
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete users. Please try again.');
         }
     }
 
     public function updateStatus(Request $request, User $user)
     {
-
         try {
             $status = $request->input('status');
             $user->update(['status' => $status]);
             return back()->with('success', 'User status updated successfully');
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Failed to update user status. Please try again.');
         }
     }
 
     public function userPermanentDelete($id)
     {
-
         $user = User::withTrashed()->findOrFail($id);
         $user->forceDelete();
         return redirect()->route('users.index')->with('success', 'User permanently deleted.');
     }
+
     public function restoreUser($id)
     {
         $user = User::onlyTrashed()->findOrFail($id);
         $user->restore();
         return redirect()->back()->with('success', 'User restored successfully.');
     }
+
 }

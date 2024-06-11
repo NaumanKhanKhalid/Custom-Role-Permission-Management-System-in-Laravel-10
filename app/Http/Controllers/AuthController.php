@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success','Logout successfully');
     }
 
     public function showForgetForm()
@@ -49,7 +49,6 @@ class AuthController extends Controller
             'email' => 'required|email|exists:users,email',
         ]);
 
-
         if (Password::sendResetLink(
             $request->only('email')
         )) {
@@ -58,7 +57,6 @@ class AuthController extends Controller
             return back()->withErrors(['error' => 'Unable to send password reset link. Please try again later.']);
         }
     }
-
 
     public function showResetForm($token)
     {

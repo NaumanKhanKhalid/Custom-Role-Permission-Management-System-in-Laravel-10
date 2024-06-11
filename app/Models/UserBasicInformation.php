@@ -28,6 +28,7 @@ class UserBasicInformation extends Model
             get: fn ($value) => date('F d, Y', strToTime($value)),
         );
     }
+    
     public function fullName()
     {
         return $this->first_name . ' ' . $this->last_name;

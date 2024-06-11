@@ -16,12 +16,12 @@ class RoleController extends Controller
     {
         $query = Role::query();
         $roles = $query->get();
+
         if ($request->has('trashed') && $request->trashed == true) {
             $roles = $query->onlyTrashed()->get();
         }
         return view('modules.roles.index', compact('roles'));
     }
-
 
     public function showPermissions($id)
     {
@@ -38,6 +38,12 @@ class RoleController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'name' => 'required|string',
+            'permission' => 'required|array',
+            'permission.*' => 'exists:permissions,id',
+        ]);
+
         try {
             DB::beginTransaction();
             $role = Role::create(['name' => $request->name]);
@@ -46,7 +52,7 @@ class RoleController extends Controller
             return redirect()->route('role.index')->with('success', 'Role created successfully!');
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Failed to create role. Please try again.');
+            return back()->withInput()->with('error', 'Failed to create role. Please try again.');
         }
     }
 
@@ -62,7 +68,6 @@ class RoleController extends Controller
 
     public function update(Request $request, Role $role)
     {
-
         try {
             DB::beginTransaction();
             $role->name = $request->input('name');
@@ -72,7 +77,6 @@ class RoleController extends Controller
             return redirect()->route('role.index')->with('success', 'Role updated successfully!');
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error('Role Update: ' . $e->getMessage());
             return back()->with('error', 'Failed to update role. Please try again.');
         }
     }
@@ -82,22 +86,30 @@ class RoleController extends Controller
         try {
             $role->delete();
             return back()->with('success', 'Role has been deleted successfully');
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete role. Please try again.');
+        }
+    }
+
+    public function restoreRole($id)
+    {
+        try {
+            $role = Role::onlyTrashed()->findOrFail($id);
+            $role->restore();
+            return redirect()->back()->with('success', 'Role restored successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to retore role. Please try again.');
         }
     }
 
     public function rolePermanentDelete($id)
     {
-        $role = Role::withTrashed()->findOrFail($id);
-        $role->forceDelete();
-        return redirect()->route('role.index')->with('success', 'Role permanently deleted.');
-    }
-
-    public function restoreRole($id)
-    {
-        $role = Role::onlyTrashed()->findOrFail($id);
-        $role->restore();
-        return redirect()->back()->with('success', 'Role restored successfully.');
+        try {
+            $role = Role::withTrashed()->findOrFail($id);
+            $role->forceDelete();
+            return redirect()->route('role.index')->with('success', 'Role permanently deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to permanently delete role. Please try again.');
+        }
     }
 }

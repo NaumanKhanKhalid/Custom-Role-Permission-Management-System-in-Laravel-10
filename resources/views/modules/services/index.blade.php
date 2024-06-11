@@ -1,4 +1,3 @@
-use App\Http\Controllers\ServiceController;
 @extends('dashboard.layouts.app')
 @section('content')
     <div class="app-content main-content">
@@ -121,132 +120,82 @@ use App\Http\Controllers\ServiceController;
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                {{-- <table class="table table-vcenter text-nowrap table-bordered border-bottom"
-                                id="project-list">
-                                <thead>
-                                    <tr>
-                                        <th class="border-bottom-0">#ID</th>
-                                        <th class="border-bottom-0">Name</th>
-
-                                        <th class="border-bottom-0">Email</th>
-                                        <th class="border-bottom-0">Phone</th>
-                                        <th class="border-bottom-0">Created At</th>
-                                        <th class="border-bottom-0">Status</th>
-                                        <th class="border-bottom-0">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-
-                                        <td>
-                                            <div class="d-flex">
-                                                <span class="avatar avatar-md brround me-3"
-                                                    style="background-image: url('{{ asset($user->basic_info->profile_picture) }}')"></span>
-                                                <div class="me-3 mt-0 mt-sm-1 d-block">
-                                                    <h6 class="mb-1 fs-14">{{ $user->basic_info->fullName() }}</h6>
+                                <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="service-list">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-bottom-0">#ID</th>
+                                            <th class="border-bottom-0">Name</th>
+                                            <th class="border-bottom-0">Icon</th>
+                                            <th class="border-bottom-0">Description</th>
+                                            <th class="border-bottom-0">Created At</th>
+                                            <th class="border-bottom-0">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($services as $service)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $service->name }}</td>
+                                            <td><i class="{{ $service->icon }}" style="font-size: 24px"></i></td>
+                                            <td>{{ $service->description }}</td>
+                                            <td>{{ $service->created_at->format('F d, Y') }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    @if (request('trashed'))
+                                                    <form action="{{ route('service.permanent.delete', ['id' => $service->id]) }}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type='submit' class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Permanent Delete Service">
+                                                            <i class="feather feather-trash-2 text-danger"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('service.restore', ['id' => $service->id]) }}" method="post">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Restore Service">
+                                                            <i class="feather feather-rotate-ccw text-success"></i>
+                                                        </button>
+                                                    </form>
+                                                    @else
+                                                    <a href="{{ route('service.show', ['service'=> $service]) }}" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="View Service">
+                                                        <i class="feather feather-eye text-primary"></i>
+                                                    </a>
+                                                    <a href="{{ route('service.edit', ['service'=> $service]) }}" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Service">
+                                                        <i class="feather feather-edit-2 text-success"></i>
+                                                    </a>
+                                                    <form action="{{ route('service.destroy', ['service' => $service]) }}" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type='submit' class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Service">
+                                                            <i class="feather feather-trash-2 text-danger"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form action="{{ route('service.updateStatus', ['service' => $service]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="status"
+                                                            value="{{ $service->status == 'Active' ? 'Inactive' : 'Active' }}">
+                                                        <button type="submit" class="action-btns1 bg-white"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="{{ $service->status == 'Active' ? 'Inative service' : 'Activate service' }}">
+                                                            <i
+                                                                class="feather {{ $service->status == 'Active' ? 'feather-x-circle text-danger' : 'feather-check-circle text-success' }}"></i>
+                                                        </button>
+                                                    </form>
+                                                    @endif
                                                 </div>
-                                            </div>
-                                        </td>
-
-
-
-
-                                        <td><span class="badge badge-info-light">{{ $user->email }}</span></td>
-                                        <td>{{ $user->basic_info->phone }}</td>
-
-                                        <td>{{ $user->created_at->format('F d, Y') }}</td>
-
-                                        <td>
-                                            @if ($user->status == 'Active')
-                                            <span class="badge badge-success-light">{{ $user->status }}</span>
-                                            @elseif($user->status == 'Inactive')
-                                            <span class="badge badge-success-light">{{ $user->status }}</span>
-                                            @else
-                                            <span class="badge badge-danger-light">{{ $user->status }}</span>
-                                            @endif
-                                        </td>
-
-
-                                        <td>
-                                            <div class="d-flex">
-
-                                                @if (request('trashed'))
-                                                <form
-                                                    action="{{ route('user.permanent.delete', ['id' => $user->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type='submit' class="action-btns1 bg-white"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="Permanent Delete User">
-                                                        <i class="feather feather-trash-2 text-danger"></i>
-                                                    </button>
-                                                </form>
-
-                                                <form action="{{ route('user.restore', ['id' => $user->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PUT')
-
-                                                    <button type="submit" class="action-btns1 bg-white"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="Restore User">
-                                                        <i class="feather feather-rotate-ccw text-success"></i>
-                                                    </button>
-
-                                                </form>
-                                                @else
-                                                <a href="{{ route('user.show',['user'=> $user]) }}"
-                                                    class="action-btns1 bg-white" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="View User"><i
-                                                        class="feather feather-eye text-primary"></i></a>
-
-
-                                                <a href="{{ route('user.edit',['user'=> $user]) }}"
-                                                    class="action-btns1 bg-white" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="Edit User"><i
-                                                        class="feather feather-edit-2  text-success"></i></a>
-                                                <form action="{{ route('user.destroy', ['user' => $user]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type='submit' class="action-btns1 bg-white"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="Delete User">
-                                                        <i class="feather feather-trash-2 text-danger"></i>
-                                                    </button>
-                                                </form>
-
-                                                <form action="{{ route('user.updateStatus', ['user' => $user]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status"
-                                                        value="{{ $user->status == 'Active' ? 'Inactive' : 'Active' }}">
-                                                    <button type="submit" class="action-btns1 bg-white"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        title="{{ $user->status == 'Active' ? 'Inative User' : 'Activate User' }}">
-                                                        <i
-                                                            class="feather {{ $user->status == 'Active' ? 'feather-x-circle text-danger' : 'feather-check-circle text-success' }}"></i>
-                                                    </button>
-                                                </form>
-                                                @endif
-
-
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table> --}}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
-            <!-- New User Modal -->
+            <!-- New Service Modal -->
             <div class="modal fade" id="newServiceModal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -254,7 +203,7 @@ use App\Http\Controllers\ServiceController;
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Service</h5>
-                                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
@@ -262,27 +211,36 @@ use App\Http\Controllers\ServiceController;
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Service Name:</label>
-                                        <input class="form-control" type="text" name="first_name"
-                                            placeholder="First Name" required>
+                                        <input class="form-control" type="text" name="name"
+                                            placeholder="Service Name" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Service Icon:</label>
-                                        <input class="form-control" type="text" name="last_name" placeholder="Last Name"
-                                            required>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="serviceIcon"
+                                                placeholder="Select an icon" name="icon">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"
+                                                    id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                                                    <i id="selected-icon" class="fas fa-icons"></i>
+                                                </button>
+                                                <div class="dropdown-menu IconPickerDropdown">
+                                                    <div class="icon-picker">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
                                 </div>
-
-
-
                                 <div class="form-group mb-3">
                                     <label class="form-label">Description:</label>
-                                    <textarea class="form-control" name="address" required></textarea>
+                                    <textarea class="form-control" name="description" required></textarea>
                                 </div>
-
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-primary"
+                                    data-bs-dismiss="modal">Close</button>
                                 <button class="btn btn-success" type="submit">Submit</button>
                             </div>
                         </form>
@@ -290,7 +248,23 @@ use App\Http\Controllers\ServiceController;
                 </div>
             </div>
 
-            <!-- New User Modal End -->
+            <!-- New Service Modal End -->
         </div>
     </div><!-- end app-content-->
+
+    @push('scripts')
+    <!-- Your existing scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#editServiceIcon').iconpicker({
+                placement: 'bottom',
+                animation: false
+            });
+
+            $('#editServiceIcon').on('iconpickerSelected', function(event) {
+                $('#selected-edit-icon').attr('class', event.iconpickerValue);
+            });
+        });
+    </script>
+@endpush
 @endsection

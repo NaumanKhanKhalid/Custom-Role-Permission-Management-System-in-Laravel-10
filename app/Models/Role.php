@@ -16,9 +16,4 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class, 'role_permissions');
     }
-
-    public function hasPermission($permissionName)
-    {
-        return $this->permissions->contains('name', $permissionName);
-    }
 }

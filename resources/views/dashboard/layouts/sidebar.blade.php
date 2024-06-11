@@ -63,6 +63,7 @@
 
                     <li><a href="{{ route('role.index',['trashed' => true]) }}" class="slide-item">Roles</a></li>
                     <li><a href="{{ route('users.index',['trashed' => true]) }}" class="slide-item">Users</a></li>
+                    <li><a href="{{ route('services.index',['trashed' => true]) }}" class="slide-item">Services</a></li>
                 </ul>
             </li>
 

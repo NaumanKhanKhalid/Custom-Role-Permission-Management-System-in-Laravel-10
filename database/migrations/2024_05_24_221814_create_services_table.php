@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon');
             $table->string('description');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+
             $table->timestamps();
             $table->softDeletes();
         });

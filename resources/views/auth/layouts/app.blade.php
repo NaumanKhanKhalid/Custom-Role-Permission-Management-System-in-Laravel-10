@@ -32,8 +32,9 @@
     <link href="{{ asset('dashboard-assets/assets/css/icons.css')}}" rel="stylesheet">
 
 
-    <!-- Notifications  Css -->
-    <link href="{{ asset('dashboard-assets/assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
+   <!-- Notifications  Css -->
+
+   <script src="{{ asset('vendor/flasher/flasher.min.css') }}"></script>
     <!-- INTERNAL Time picker css -->
     <!-- Select2 css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/select2/select2.min.css')}}" rel="stylesheet">
@@ -59,39 +60,18 @@
 
     <!-- P-scroll js-->
     <script src="{{ asset('dashboard-assets/assets/plugins/p-scrollbar/p-scrollbar.js')}}"></script>
-    <!-- Notifications js -->
-    <script src="{{ asset('dashboard-assets/assets/plugins/notify/js/notifIt.js') }}"></script>
+  <!-- Notifications js -->
+  <script src="{{ asset('vendor/flasher/flasher.min.js') }}"></script>
     <!-- Custom js-->
     <script src="{{ asset('dashboard-assets/assets/js/custom.js') }}"></script>
-
-
-    @if (Session::has('success'))
-    <script>
-        notif({
-                    msg: "<b><i class='fa fa-check fs-20 me-2'></i></b> {!! Session::get('success') !!}",
-                    type: "success"
-                });
-    </script>
-    @endif
-    @if (Session::has('error'))
-    <script>
-        notif({
-                    msg: "<b><i class='fa fa-exclamation-circle fs-20 me-2'></i></b> {!! Session::get('error') !!}",
-                    type: "error"
-                });
-    </script>
-    @endif
-
+   
     @if ($errors->any())
-@foreach ($errors->all() as $error)
-<script>
-    notif({
-        msg: "<b><i class='fa fa-exclamation-circle fs-20 me-2'></i></b> {!! $error !!}",
-        type: "error"
-    });
-</script>
-@endforeach
-@endif
+        @foreach ($errors->all() as $index => $error)
+            <script>
+                flasher.error('{{ $error }}').priority({{ $loop->index + 1 }});
+            </script>
+        @endforeach
+    @endif
 
 
 </body>

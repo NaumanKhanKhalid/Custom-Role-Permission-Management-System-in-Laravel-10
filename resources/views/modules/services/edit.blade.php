@@ -6,101 +6,51 @@
         <!--Page header-->
         <div class="page-header d-xl-flex d-block">
             <div class="page-leftheader">
-                <h4 class="page-title">Employee</h4>
+                <h4 class="page-title">Edit Service</h4>
             </div>
         </div>
         <!--End Page header-->
         <!-- Row -->
         <div class="row">
-            <div class="col-xl-3 col-md-12 col-lg-12">
-                <div class="card box-widget widget-user">
-                    <div class="card-body text-center">
-                        <div class="widget-user-image mx-auto text-center">
-                            <img class="avatar avatar-xxl brround rounded-circle" alt="img"
-                                src="../../assets/images/users/1.jpg">
-                        </div>
-                        <div class="pro-user mt-3">
-                            <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->basic_info->fullName() }}</h5>
-                            <h6 class="pro-user-desc text-muted fs-12">{{ $user->role->name }}</h6>
-                        </div>
-
-                    </div>
-                    <div class="card-footer p-0">
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-9 col-md-12 col-lg-12">
-                <div class="tab-menu-heading hremp-tabs p-0 ">
-                    <div class="tabs-menu1">
-                        <!-- Tabs -->
-                        <ul class="nav panel-tabs">
-                            <li class="ms-4"><a href="#tab5" class="active" data-bs-toggle="tab">Personal Details</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="col-xl-12 col-md-12 col-lg-12">
                 <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab5">
-                            <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('service.update', $service->id) }}" method="POST" enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="card-body">
                                     <h4 class="mb-4 font-weight-bold">Basic</h4>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">First Name</label>
-                                            <input type="text" class="form-control" placeholder="First Name"
-                                                name="first_name" value="{{ $user->basic_info->first_name }}">
+                                            <label class="form-label mb-0 mt-2">Service Name</label>
+                                            <input type="text" class="form-control" placeholder="Service Name"
+                                                name="name" value="{{ $service->name }}" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Last Name</label>
-                                            <input type="text" name="last_name" class="form-control"
-                                                placeholder="Last Name" value="{{ $user->basic_info->last_name }}">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Contact Number</label>
-                                            <input type="text" name="phone" class="form-control"
-                                                placeholder="Phone Number" value="{{ $user->basic_info->phone }}">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Date Of Birth</label>
-                                            <input type="text" name="dob" class="form-control fc-datepicker"
-                                                placeholder="DD-MM-YYY" value="{{ $user->basic_info->dob }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label class="form-label mb-0 mt-2">Address</label>
-                                        <textarea rows="3" name="address" class="form-control"
-                                            placeholder="Address1">{{ $user->basic_info->address }}</textarea>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Upload Photo</label>
-                                            <input class="form-control" name="profile_picture" type="file">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Email</label>
-                                            <input type="email" name="email" class="form-control" placeholder="email"
-                                                value="{{ $user->email }}">
+                                            <label class="form-label mb-0 mt-2">Service Icon</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="serviceIcon" name="icon" value="{{ $service->icon }}" placeholder="Select an icon">
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i id="selected-icon" class="{{ $service->icon }}"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <div class="icon-picker">
+                                                            <i class="fas fa-home"></i>
+                                                            <i class="fas fa-user"></i>
+                                                            <i class="fas fa-cog"></i>
+                                                            <!-- Add more icons as needed -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="form-label mb-0 mt-2">Status</label>
-                                        <select name="status" class="form-control custom-select select2"
-                                            data-placeholder="Select Status" required>
-                                            <option value="Active" {{ $user->status == "Active" ? 'selected' : '' }}
-                                                >Active</option>
-                                            <option value="Inactive" {{ $user->status == "Inactive" ? 'selected' :
-                                                '' }} >Inactive</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label mb-0 mt-2">Password</label>
-                                        <input type="password" name="password" class="form-control"
-                                            placeholder="password" value="">
+                                        <label class="form-label mb-0 mt-2">Description</label>
+                                        <textarea rows="3" name="description" class="form-control"
+                                            placeholder="Description">{{ $service->description }}</textarea>
                                     </div>
                                 </div>
 
@@ -109,14 +59,45 @@
                                     <button class="btn btn-success" type="submit">Submit</button>
                                 </div>
                             </form>
-
                         </div>
-
                     </div>
                 </div>
             </div>
             <!-- End Row-->
-
         </div><!-- end app-content-->
     </div>
-    @endsection
+</div>
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>
+@push('scripts')
+
+<script>
+    $(document).ready(function() {
+        $('#serviceIcon').iconpicker();
+        $('#serviceIcon').iconpicker().on('iconpickerSelected', function(event) {
+            $('#selected-icon').attr('class', event.iconpickerValue);
+        });
+
+        $('.dropdown-toggle').on('click', function() {
+            var $popover = $(this).siblings('.dropdown-menu');
+            $popover.toggle();
+        });
+    });
+</script>
+<style>
+    .icon-picker i {
+        font-size: 24px;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .icon-picker i:hover {
+        background-color: #f0f0f0;
+    }
+</style>
+@endpush
+
+@push('scripts')
+
+@endsection
