@@ -120,7 +120,8 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-vcenter text-nowrap table-bordered border-bottom" id="service-list">
+                                <table class="table table-vcenter text-nowrap table-bordered border-bottom"
+                                    id="service-list">
                                     <thead>
                                         <tr>
                                             <th class="border-bottom-0">#ID</th>
@@ -133,65 +134,82 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($services as $service)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $service->name }}</td>
-                                            <td><i class="{{ $service->icon }}" style="font-size: 24px"></i></td>
-                                            <td>{{ $service->description }}</td>
-                                            <td>{{ $service->created_at->format('F d, Y') }}</td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    @if (request('trashed'))
-                                                    <form action="{{ route('service.permanent.delete', ['id' => $service->id]) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type='submit' class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Permanent Delete Service">
-                                                            <i class="feather feather-trash-2 text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{ route('service.restore', ['id' => $service->id]) }}" method="post">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Restore Service">
-                                                            <i class="feather feather-rotate-ccw text-success"></i>
-                                                        </button>
-                                                    </form>
-                                                    @else
-                                                    <a href="{{ route('service.show', ['service'=> $service]) }}" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="View Service">
-                                                        <i class="feather feather-eye text-primary"></i>
-                                                    </a>
-                                                    <a href="{{ route('service.edit', ['service'=> $service]) }}" class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Service">
-                                                        <i class="feather feather-edit-2 text-success"></i>
-                                                    </a>
-                                                    <form action="{{ route('service.destroy', ['service' => $service]) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type='submit' class="action-btns1 bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Service">
-                                                            <i class="feather feather-trash-2 text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                    <form action="{{ route('service.updateStatus', ['service' => $service]) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="status"
-                                                            value="{{ $service->status == 'Active' ? 'Inactive' : 'Active' }}">
-                                                        <button type="submit" class="action-btns1 bg-white"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="{{ $service->status == 'Active' ? 'Inative service' : 'Activate service' }}">
-                                                            <i
-                                                                class="feather {{ $service->status == 'Active' ? 'feather-x-circle text-danger' : 'feather-check-circle text-success' }}"></i>
-                                                        </button>
-                                                    </form>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $service->name }}</td>
+                                                <td><i class="{{ $service->icon }}" style="font-size: 24px"></i></td>
+                                                <td>{{ $service->description }}</td>
+                                                <td>{{ $service->created_at->format('F d, Y') }}</td>
+                                                <td>
+                                                    <div class="d-flex">
+                                                        @if (request('trashed'))
+                                                            <form
+                                                                action="{{ route('service.permanent.delete', ['id' => $service->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type='submit' class="action-btns1 bg-white"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Permanent Delete Service">
+                                                                    <i class="feather feather-trash-2 text-danger"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form
+                                                                action="{{ route('service.restore', ['id' => $service->id]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="action-btns1 bg-white"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Restore Service">
+                                                                    <i class="feather feather-rotate-ccw text-success"></i>
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            <a href="{{ route('service.show', ['service' => $service]) }}"
+                                                                class="action-btns1 bg-white" data-bs-toggle="tooltip"
+                                                                data-bs-placement="top" title="View Service">
+                                                                <i class="feather feather-eye text-primary"></i>
+                                                            </a>
+                                                            <a href="{{ route('service.edit', ['service' => $service]) }}"
+                                                                class="action-btns1 bg-white" data-bs-toggle="tooltip"
+                                                                data-bs-placement="top" title="Edit Service">
+                                                                <i class="feather feather-edit-2 text-success"></i>
+                                                            </a>
+                                                            <form
+                                                                action="{{ route('service.destroy', ['service' => $service]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type='submit' class="action-btns1 bg-white"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="Delete Service">
+                                                                    <i class="feather feather-trash-2 text-danger"></i>
+                                                                </button>
+                                                            </form>
+                                                            <form
+                                                                action="{{ route('service.updateStatus', ['service' => $service]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <input type="hidden" name="status"
+                                                                    value="{{ $service->status == 'Active' ? 'Inactive' : 'Active' }}">
+                                                                <button type="submit" class="action-btns1 bg-white"
+                                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                    title="{{ $service->status == 'Active' ? 'Inative service' : 'Activate service' }}">
+                                                                    <i
+                                                                        class="feather {{ $service->status == 'Active' ? 'feather-x-circle text-danger' : 'feather-check-circle text-success' }}"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -253,18 +271,28 @@
     </div><!-- end app-content-->
 
     @push('scripts')
-    <!-- Your existing scripts -->
-    <script>
-        $(document).ready(function() {
-            $('#editServiceIcon').iconpicker({
-                placement: 'bottom',
-                animation: false
-            });
+        <script>
+            $(document).ready(function() {
+                // Initialize icon picker
+                $('#serviceIcon').iconpicker({
+                    // optional settings
+                    placement: 'bottom', // dropdown placement
+                    animation: false // disable animation
+                });
 
-            $('#editServiceIcon').on('iconpickerSelected', function(event) {
-                $('#selected-edit-icon').attr('class', event.iconpickerValue);
+                // Show/hide dropdown menu when clicking on the button
+                $('#dropdownMenuButton').on('click', function() {
+                    $('.dropdown-menu').toggleClass('show');
+                });
+
+                // Set selected icon on icon picker selection
+                $('#serviceIcon').on('iconpickerSelected', function(event) {
+                    $('#selected-icon').attr('class', event.iconpickerValue);
+                });
+
+                // Show alert to check if script is loaded
+                alert("Icon picker initialized");
             });
-        });
-    </script>
-@endpush
+        </script>
+    @endpush
 @endsection

@@ -68,36 +68,3 @@
     </div>
 </div>
 @endsection
-
-@section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>
-@push('scripts')
-
-<script>
-    $(document).ready(function() {
-        $('#serviceIcon').iconpicker();
-        $('#serviceIcon').iconpicker().on('iconpickerSelected', function(event) {
-            $('#selected-icon').attr('class', event.iconpickerValue);
-        });
-
-        $('.dropdown-toggle').on('click', function() {
-            var $popover = $(this).siblings('.dropdown-menu');
-            $popover.toggle();
-        });
-    });
-</script>
-<style>
-    .icon-picker i {
-        font-size: 24px;
-        padding: 10px;
-        cursor: pointer;
-    }
-    .icon-picker i:hover {
-        background-color: #f0f0f0;
-    }
-</style>
-@endpush
-
-@push('scripts')
-
-@endsection
