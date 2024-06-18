@@ -43,7 +43,6 @@ Route::middleware('auth.check')->group(function () {
 
     Route::prefix('services')->group(function () {
         Route::get('/', [ServiceController::class, 'index'])->name('services.index')->middleware('permission.check:view_services');
-        Route::get('{service}/show', [ServiceController::class, 'show'])->name('service.show');
         Route::post('create', [ServiceController::class, 'store'])->name('service.store')->middleware('permission.check:create_service');
         Route::get('{service}/edit', [ServiceController::class, 'edit'])->name('service.edit')->middleware('permission.check:edit_service');
         Route::put('{service}/update', [ServiceController::class, 'update'])->name('service.update')->middleware('permission.check:edit_service');

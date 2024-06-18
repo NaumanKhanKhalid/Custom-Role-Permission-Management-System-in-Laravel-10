@@ -21,10 +21,10 @@ class ServiceController extends Controller
 
         $services = $query->get();
 
-        $totalServicesCount = 0; // Service::count();
-        $activeServicesCount = 0; // Service::where('status', 'Active')->count();
-        $inactiveServicesCount = 0; // Service::where('status', 'Inactive')->count();
-        $trashedServicesCount = 0; // Service::onlyTrashed()->count();
+        $totalServicesCount = Service::count();
+        $activeServicesCount =  Service::where('status', 'Active')->count();
+        $inactiveServicesCount =  Service::where('status', 'Inactive')->count();
+        $trashedServicesCount =  Service::onlyTrashed()->count();
         return view('modules.services.index', compact('services', 'totalServicesCount', 'activeServicesCount', 'inactiveServicesCount', 'trashedServicesCount'));
     }
 
@@ -51,6 +51,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
@@ -70,6 +71,12 @@ class ServiceController extends Controller
         }
     }
 
+    public function edit(Request $request,$service_id)
+    {
+        $service = Service::find($service_id);
+        return response()->json($service);
+    }
+    
     public function destroy(Service $service)
     {
         try {

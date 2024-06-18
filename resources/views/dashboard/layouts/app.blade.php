@@ -38,7 +38,8 @@
     <link href="{{ asset('dashboard-assets/assets/plugins/jvectormap/jqvmap.css') }}" rel="stylesheet" />
     <!-- Notifications  Css -->
 
-    <script src="{{ asset('vendor/flasher/flasher.min.css') }}"></script>
+    <link href="{{ asset('vendor/flasher/flasher.min.css') }}" rel="stylesheet" />
+
     <!-- INTERNAL Time picker css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/time-picker/jquery.timepicker.css') }}" rel="stylesheet" />
     <!-- INTERNAL jQuery-countdowntimer css -->

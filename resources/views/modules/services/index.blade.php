@@ -166,14 +166,16 @@
                                                                 </button>
                                                             </form>
                                                         @else
-                                                            <a href="{{ route('service.show', ['service' => $service]) }}"
+                                                            {{-- <a href="{{ route('service.show', ['service' => $service]) }}"
                                                                 class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                                 data-bs-placement="top" title="View Service">
                                                                 <i class="feather feather-eye text-primary"></i>
-                                                            </a>
-                                                            <a href="{{ route('service.edit', ['service' => $service]) }}"
-                                                                class="action-btns1 bg-white" data-bs-toggle="tooltip"
-                                                                data-bs-placement="top" title="Edit Service">
+                                                            </a> --}}
+                                                            <a href="#" class="action-btns1 bg-white edit-service"
+                                                                data-id="{{ $service->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#editServiceModal"
+                                                                data-bs-tooltip="tooltip" data-bs-placement="top"
+                                                                title="Edit Service">
                                                                 <i class="feather feather-edit-2 text-success"></i>
                                                             </a>
                                                             <form
@@ -238,8 +240,8 @@
                                             <input type="text" class="form-control" id="serviceIcon"
                                                 placeholder="Select an icon" name="icon">
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-outline-secondary dropdown-toggle"
-                                                    id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                                                <button type="button" class="btn btn-outline-secondary "
+                                                    >
                                                     <i id="selected-icon" class="fas fa-icons"></i>
                                                 </button>
                                                 <div class="dropdown-menu IconPickerDropdown">
@@ -267,31 +269,110 @@
             </div>
 
             <!-- New Service Modal End -->
+
+            <!-- Edit Service Modal -->
+            <div class="modal fade" id="editServiceModal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <form id="editServiceForm" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Service</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Service Name:</label>
+                                        <input class="form-control" type="text" name="name" id="editServiceName"
+                                            required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Service Icon:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="editServiceIcon"
+                                                name="icon">
+                                            <div class="input-group-append">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    >
+                                                    <i id="editSelectedIcon" class="fas fa-icons"></i>
+                                                </button>
+                                                <div class="dropdown-menu IconPickerDropdown">
+                                                    <div class="icon-picker">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Description:</label>
+                                    <textarea class="form-control" name="description" id="editServiceDescription" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button class="btn btn-success" type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit Service Modal End -->
         </div>
     </div><!-- end app-content-->
 
     @push('scripts')
         <script>
             $(document).ready(function() {
-                // Initialize icon picker
                 $('#serviceIcon').iconpicker({
-                    // optional settings
-                    placement: 'bottom', // dropdown placement
-                    animation: false // disable animation
+                    placement: 'bottom',
+                    animation: false
                 });
 
-                // Show/hide dropdown menu when clicking on the button
-                $('#dropdownMenuButton').on('click', function() {
-                    $('.dropdown-menu').toggleClass('show');
-                });
-
-                // Set selected icon on icon picker selection
                 $('#serviceIcon').on('iconpickerSelected', function(event) {
                     $('#selected-icon').attr('class', event.iconpickerValue);
                 });
 
-                // Show alert to check if script is loaded
-                alert("Icon picker initialized");
+                $('#editServiceIcon').iconpicker({
+                    placement: 'bottom',
+                    animation: false
+                });
+
+                $('#editDropdownMenuButton').on('iconpickerSelected', function(event) {
+                    $('#editSelectedIcon').attr('class', event.iconpickerValue);
+                });
+
+                $('#editServiceIcon').on('iconpickerSelected', function(event) {
+                    $('#editSelectedIcon').attr('class', event.iconpickerValue);
+                });
+
+                $('.edit-service').on('click', function() {
+                    var serviceId = $(this).data('id');
+
+                    $.ajax({
+                        url: "{{ route('service.edit', ':serviceId') }}".replace(':serviceId', serviceId),
+                        method: 'GET',
+                        success: function(data) {
+                            console.log(data);
+                            $('#editServiceForm').attr('action', "{{ route('service.update', ':serviceId') }}".replace(':serviceId', serviceId));
+                            $('#editServiceName').val(data.name);
+                            $('#editServiceIcon').val(data.icon);
+                            $('#editSelectedIcon').attr('class', data.icon);
+                            $('#editServiceDescription').val(data.description);
+                            $('#editServiceModal').modal('show');
+                            $('#editServiceForm').find('input[name="_method"]').val('PUT');
+
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
             });
         </script>
     @endpush
