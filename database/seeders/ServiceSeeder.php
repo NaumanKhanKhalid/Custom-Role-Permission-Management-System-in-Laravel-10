@@ -24,7 +24,6 @@ class ServiceSeeder extends Seeder
                 'description' => 'Leave the management of your social media presence to us. Our team will take care of everything from content creation to analytics, ensuring you build a strong brand presence & grow your business.',
                 'created_at' => Carbon::now(),
             ]
-
         ];
         Service::insert($services);
     }

@@ -59,7 +59,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>1</td>
+                                        <td>2</td>
                                         <td class="font-weight-semibold">Service Managment</td>
 
                                         <td class="text-center">
@@ -80,6 +80,54 @@
                                         <td class="text-center">
                                             <span
                                                 class="{{ $roles->permissions->contains('id','8') ? $yesClass : $noClass }}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td class="font-weight-semibold">Package Managment</td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','9') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','10') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','11') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','12') ? $yesClass : $noClass }}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="font-weight-semibold">Item Managment</td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','12') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','14') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','15') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','16') ? $yesClass : $noClass }}"></span>
                                         </td>
                                     </tr>
                                 </tbody>

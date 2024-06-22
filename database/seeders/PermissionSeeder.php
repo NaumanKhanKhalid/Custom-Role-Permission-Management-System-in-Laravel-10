@@ -18,8 +18,17 @@ class PermissionSeeder extends Seeder
             ['name' => 'view_services'],
             ['name' => 'edit_service'],
             ['name' => 'delete_service'],
+            ['name' => 'create_package'],
+            ['name' => 'view_packages'],
+            ['name' => 'edit_package'],
+            ['name' => 'delete_package'],
+            ['name' => 'create_item'],
+            ['name' => 'view_items'],
+            ['name' => 'edit_item'],
+            ['name' => 'delete_item'],
         ];
 
         Permission::insert($permissions);
     }
+
 }

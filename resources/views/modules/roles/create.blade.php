@@ -64,7 +64,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="font-weight-semibold">User</td>
+                                            <td class="font-weight-semibold">User Managment</td>
                                             <td class="text-center">
                                                 <label
                                                     class="custom-control custom-checkbox permission-checkbox success">
@@ -101,7 +101,124 @@
                                                     <span class="custom-control-label"></span>
                                                 </label>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-semibold">Service Managment</td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="5">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="6">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="7">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="8">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-semibold">Package Managment</td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="9">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="10">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="11">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="12">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
 
+                                        </tr>
+                                        <tr>
+                                            <td class="font-weight-semibold">Item Managment</td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="13">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="14">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="15">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="16">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

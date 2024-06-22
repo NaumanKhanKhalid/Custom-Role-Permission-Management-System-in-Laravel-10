@@ -2,13 +2,13 @@
 <aside class="app-sidebar">
     <div class="app-sidebar__logo">
         <a class="header-brand" href="index.html">
-            <img src="{{ asset('dashboard-assets/assets/images/brand/logo.png')}}" class="header-brand-img desktop-lgo"
+            <img src="{{ asset('dashboard-assets/assets/images/brand/logo.png') }}" class="header-brand-img desktop-lgo"
                 alt="Dayonelogo">
-            <img src="{{asset('dashboard-assets/assets/images/brand/logo-white.png')}}"
+            <img src="{{ asset('dashboard-assets/assets/images/brand/logo-white.png') }}"
                 class="header-brand-img dark-logo" alt="Dayonelogo">
-            <img src="{{asset('dashboard-assets/assets/images/brand/favicon.png')}}"
+            <img src="{{ asset('dashboard-assets/assets/images/brand/favicon.png') }}"
                 class="header-brand-img mobile-logo" alt="Dayonelogo">
-            <img src="{{asset('dashboard-assets/assets/images/brand/favicon1.png')}}"
+            <img src="{{ asset('dashboard-assets/assets/images/brand/favicon1.png') }}"
                 class="header-brand-img darkmobile-logo" alt="Dayonelogo">
         </a>
     </div>
@@ -16,7 +16,7 @@
         <div class="app-sidebar__user">
             <div class="dropdown user-pro-body text-center">
                 <div class="user-pic">
-                    <img src="{{ asset('dashboard-assets/assets/images/users/16.jpg')}}" alt="user-img"
+                    <img src="{{ asset('dashboard-assets/assets/images/users/16.jpg') }}" alt="user-img"
                         class="avatar-xxl rounded-circle mb-1">
                 </div>
                 <div class="user-info">
@@ -40,20 +40,36 @@
                     <span class="side-menu__label">Users</span><i class="angle fa fa-angle-right"></i></a>
                 <ul class="slide-menu">
                     @can('user_management', 'view_users')
-                    <li><a href="{{ route('users.index') }}" class="slide-item">Users</a></li>
+                        <li><a href="{{ route('users.index') }}" class="slide-item">Users</a></li>
                     @endcan
 
                     <li><a href="{{ route('role.index') }}" class="slide-item">Roles</a></li>
                 </ul>
             </li>
             @can('service_management', 'view_services')
+                <li class="slide">
+                    <a class="side-menu__item" href="{{ route('services.index') }}">
+                        <i class="feather feather-home sidemenu_icon"></i>
+                        <span class="side-menu__label"><span class="nav-list">Services</span></span>
+                    </a>
+                </li>
+            @endcan
+            @can('package_management', 'view_packages')
+                <li class="slide">
+                    <a class="side-menu__item" href="{{ route('packages.index') }}">
+                        <i class="feather feather-home sidemenu_icon"></i>
+                        <span class="side-menu__label"><span class="nav-list">Packages</span></span>
+                    </a>
+                </li>
+            @endcan
+            @can('item_management', 'view_items')
             <li class="slide">
-                <a class="side-menu__item" href="{{ route('services.index') }}">
+                <a class="side-menu__item" href="{{ route('items.index') }}">
                     <i class="feather feather-home sidemenu_icon"></i>
-                    <span class="side-menu__label"><span class="nav-list">Services</span></span>
+                    <span class="side-menu__label"><span class="nav-list">Items</span></span>
                 </a>
             </li>
-            @endcan
+        @endcan
 
             <li class="slide">
                 <a class="side-menu__item" data-bs-toggle="slide" href="#">
@@ -61,9 +77,13 @@
                     <span class="side-menu__label">Trash</span><i class="angle fa fa-angle-right"></i></a>
                 <ul class="slide-menu">
 
-                    <li><a href="{{ route('role.index',['trashed' => true]) }}" class="slide-item">Roles</a></li>
-                    <li><a href="{{ route('users.index',['trashed' => true]) }}" class="slide-item">Users</a></li>
-                    <li><a href="{{ route('services.index',['trashed' => true]) }}" class="slide-item">Services</a></li>
+                    <li><a href="{{ route('role.index', ['trashed' => true]) }}" class="slide-item">Roles</a></li>
+                    <li><a href="{{ route('users.index', ['trashed' => true]) }}" class="slide-item">Users</a></li>
+                    <li><a href="{{ route('services.index', ['trashed' => true]) }}" class="slide-item">Services</a>
+                    </li>
+                    <li><a href="{{ route('packages.index', ['trashed' => true]) }}" class="slide-item">Packages</a>
+                    <li><a href="{{ route('items.index', ['trashed' => true]) }}" class="slide-item">Package Items</a>
+                    </li>
                 </ul>
             </li>
 

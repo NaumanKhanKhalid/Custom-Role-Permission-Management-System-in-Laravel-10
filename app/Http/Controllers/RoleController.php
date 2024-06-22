@@ -43,7 +43,6 @@ class RoleController extends Controller
             'permission' => 'required|array',
             'permission.*' => 'exists:permissions,id',
         ]);
-
         try {
             DB::beginTransaction();
             $role = Role::create(['name' => $request->name]);
@@ -63,6 +62,7 @@ class RoleController extends Controller
     public function edit(string $id)
     {
         $role = Role::with('permissions')->where('id', $id)->first();
+        
         return view('modules.roles.edit', compact('role'));
     }
 

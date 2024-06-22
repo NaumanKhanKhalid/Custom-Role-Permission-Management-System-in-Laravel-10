@@ -121,7 +121,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-vcenter text-nowrap table-bordered border-bottom"
-                                    id="service-list">
+                                    id="project-list">
                                     <thead>
                                         <tr>
                                             <th class="border-bottom-0">#ID</th>
@@ -138,7 +138,47 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $service->name }}</td>
                                                 <td><i class="{{ $service->icon }}" style="font-size: 24px"></i></td>
-                                                <td>{{ $service->description }}</td>
+                                                <td>
+                                                    @if (strlen($service->description) > 40)
+                                                        {{ substr($service->description, 0, 40) }}...
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#descriptionModal{{ $service->id }}">Read
+                                                            more</a>
+                                                        <div class="modal fade" id="descriptionModal{{ $service->id }}"
+                                                            tabindex="-1" aria-labelledby="descriptionModalLabel"
+                                                            aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="descriptionModalLabel">
+                                                                            Service Description</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <textarea class="form-control b-none" name="description" id="editServiceDescription">  {{ $service->description }} </textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <p>{{ $service->description }}</p>
+                                                    @endif
+                                                </td>
+
+
+
+                                                <style>
+                                                    .description-toggle .full-description {
+                                                        display: none;
+                                                    }
+
+                                                    .description-toggle .full-description.show {
+                                                        display: inline;
+                                                    }
+                                                </style>
+
                                                 <td>{{ $service->created_at->format('F d, Y') }}</td>
                                                 <td>
                                                     <div class="d-flex">
@@ -240,8 +280,7 @@
                                             <input type="text" class="form-control" id="serviceIcon"
                                                 placeholder="Select an icon" name="icon">
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-outline-secondary "
-                                                    >
+                                                <button type="button" class="btn btn-outline-secondary ">
                                                     <i id="selected-icon" class="fas fa-icons"></i>
                                                 </button>
                                                 <div class="dropdown-menu IconPickerDropdown">
@@ -296,8 +335,7 @@
                                             <input type="text" class="form-control" id="editServiceIcon"
                                                 name="icon">
                                             <div class="input-group-append">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    >
+                                                <button type="button" class="btn btn-outline-secondary">
                                                     <i id="editSelectedIcon" class="fas fa-icons"></i>
                                                 </button>
                                                 <div class="dropdown-menu IconPickerDropdown">
@@ -355,11 +393,14 @@
                     var serviceId = $(this).data('id');
 
                     $.ajax({
-                        url: "{{ route('service.edit', ':serviceId') }}".replace(':serviceId', serviceId),
+                        url: "{{ route('service.edit', ':serviceId') }}".replace(':serviceId',
+                            serviceId),
                         method: 'GET',
                         success: function(data) {
                             console.log(data);
-                            $('#editServiceForm').attr('action', "{{ route('service.update', ':serviceId') }}".replace(':serviceId', serviceId));
+                            $('#editServiceForm').attr('action',
+                                "{{ route('service.update', ':serviceId') }}".replace(
+                                    ':serviceId', serviceId));
                             $('#editServiceName').val(data.name);
                             $('#editServiceIcon').val(data.icon);
                             $('#editSelectedIcon').attr('class', data.icon);
