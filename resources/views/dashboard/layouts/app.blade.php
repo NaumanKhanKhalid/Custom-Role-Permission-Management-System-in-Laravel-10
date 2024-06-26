@@ -11,7 +11,7 @@
     <!--Favicon -->
     <link rel="icon" href="{{ asset('dashboard-assets/assets/images/brand/favicon.ico') }}" type="image/x-icon" />
     <!-- Bootstrap css -->
-    <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet"
+        <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet"
         id="style" />
     <!-- Style css -->
     <link href="{{ asset('dashboard-assets/assets/css/style.css') }}" rel="stylesheet" />

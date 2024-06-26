@@ -27,7 +27,7 @@
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12 col-md-12 col-lg-12">
-                <form action="{{ route('role.store') }}" method="POST">
+                <form action="{{ route('backend.role.store') }}" method="POST">
                     @csrf
 
                     <div class="card">

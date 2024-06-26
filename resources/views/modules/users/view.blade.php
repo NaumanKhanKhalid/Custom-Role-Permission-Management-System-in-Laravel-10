@@ -10,7 +10,7 @@
                     <h4 class="page-title">{{ $user->basic_info->fullName() }} Profile</h4>
                 </div>
                 <div class="page-rightheader">
-                    <a class="btn btn-primary" href="{{ route('users.index') }}">Back</a>
+                    <a class="btn btn-primary" href="{{ route('backend.users.index') }}">Back</a>
                 </div>
 
             </div>

@@ -33,7 +33,7 @@
             <!-- Row -->
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-lg-12">
-                    <form action="{{ route('role.update', $role->id) }}" method="POST">
+                    <form action="{{ route('backend.role.update', $role->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 

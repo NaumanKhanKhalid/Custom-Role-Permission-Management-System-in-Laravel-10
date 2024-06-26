@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('services.index') }}" method="GET">
+                            <form action="{{ route('backend.services.index') }}" method="GET">
                                 <div class="row">
 
 
@@ -184,7 +184,7 @@
                                                     <div class="d-flex">
                                                         @if (request('trashed'))
                                                             <form
-                                                                action="{{ route('service.permanent.delete', ['id' => $service->id]) }}"
+                                                                action="{{ route('backend.service.permanent.delete', ['id' => $service->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -195,7 +195,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('service.restore', ['id' => $service->id]) }}"
+                                                                action="{{ route('backend.service.restore', ['id' => $service->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
@@ -206,7 +206,7 @@
                                                                 </button>
                                                             </form>
                                                         @else
-                                                            {{-- <a href="{{ route('service.show', ['service' => $service]) }}"
+                                                            {{-- <a href="{{ route('backend.service.show', ['service' => $service]) }}"
                                                                 class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                                 data-bs-placement="top" title="View Service">
                                                                 <i class="feather feather-eye text-primary"></i>
@@ -219,7 +219,7 @@
                                                                 <i class="feather feather-edit-2 text-success"></i>
                                                             </a>
                                                             <form
-                                                                action="{{ route('service.destroy', ['service' => $service]) }}"
+                                                                action="{{ route('backend.service.destroy', ['service' => $service]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -230,7 +230,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('service.updateStatus', ['service' => $service]) }}"
+                                                                action="{{ route('backend.service.updateStatus', ['service' => $service]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="status"
@@ -259,7 +259,7 @@
             <div class="modal fade" id="newServiceModal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('service.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('backend.service.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Service</h5>
@@ -393,13 +393,13 @@
                     var serviceId = $(this).data('id');
 
                     $.ajax({
-                        url: "{{ route('service.edit', ':serviceId') }}".replace(':serviceId',
+                        url: "{{ route('backend.service.edit', ':serviceId') }}".replace(':serviceId',
                             serviceId),
                         method: 'GET',
                         success: function(data) {
                             console.log(data);
                             $('#editServiceForm').attr('action',
-                                "{{ route('service.update', ':serviceId') }}".replace(
+                                "{{ route('backend.service.update', ':serviceId') }}".replace(
                                     ':serviceId', serviceId));
                             $('#editServiceName').val(data.name);
                             $('#editServiceIcon').val(data.icon);

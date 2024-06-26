@@ -17,7 +17,6 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -26,16 +25,20 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard');
+            $user = Auth::user();
+            if ($user->role->name == 'Client') {
+                return redirect()->route('services.index');
+            }
+            return redirect()->route('backend.dashboard');
         }
 
-        return back()->withInput()->withErrors('Invalid email or password');
+        return back()->withInput()->withErrors(['email' => 'Invalid email or password']);
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('login')->with('success','Logout successfully');
+        return redirect()->route('login')->with('success', 'Logout successfully');
     }
 
     public function showForgetForm()

@@ -43,7 +43,7 @@
                 <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab5">
-                            <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('backend.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="card-body">

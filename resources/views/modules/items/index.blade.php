@@ -68,7 +68,7 @@
                                                     <div class="d-flex">
                                                         @if (request('trashed'))
                                                             <form
-                                                                action="{{ route('item.permanent.delete', ['id' => $item->id]) }}"
+                                                                action="{{ route('backend.item.permanent.delete', ['id' => $item->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -79,7 +79,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('item.restore', ['id' => $item->id]) }}"
+                                                                action="{{ route('backend.item.restore', ['id' => $item->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
@@ -96,7 +96,7 @@
                                                                 data-bs-placement="top" title="Edit Item">
                                                                 <i class="feather feather-edit-2 text-success"></i>
                                                             </a>
-                                                            <form action="{{ route('item.destroy', ['item' => $item]) }}"
+                                                            <form action="{{ route('backend.item.destroy', ['item' => $item]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -107,7 +107,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('item.updateStatus', ['item' => $item]) }}"
+                                                                action="{{ route('backend.item.updateStatus', ['item' => $item]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="status"
@@ -136,7 +136,7 @@
             <div class="modal fade" id="newPackageModal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('backend.item.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Item</h5>
@@ -250,13 +250,13 @@
                     var itemId = $(this).data('id');
 
                     $.ajax({
-                        url: "{{ route('item.edit', ':itemId') }}".replace(':itemId',
+                        url: "{{ route('backend.item.edit', ':itemId') }}".replace(':itemId',
                             itemId),
                         method: 'GET',
                         success: function(data) {
                             console.log(data);
                             $('#editServiceForm').attr('action',
-                                "{{ route('item.update', ':itemId') }}".replace(
+                                "{{ route('backend.item.update', ':itemId') }}".replace(
                                     ':itemId', itemId));
                             $('#editItemName').val(data.name);
                             $('#editItemPrice').val(data.price);

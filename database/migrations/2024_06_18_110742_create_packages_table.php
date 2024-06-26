@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('service_id')->constrained('services')->cascadeOnDelete();
             $table->string('name');
             $table->decimal('price', 10, 2)->default(0.00);
             $table->enum('status', ['Active', 'Inactive'])->default('Active');

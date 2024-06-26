@@ -6,12 +6,15 @@ use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Service;
 
 class PackageController extends Controller
 {
     public function index(Request $request)
     {
 
+
+        $services  = Service::where('Status', 'Active')->get();
         $query = Package::query();
 
         // Include trashed users if the 'trashed' parameter is present and true
@@ -25,7 +28,7 @@ class PackageController extends Controller
         $activePackagesCount =  Package::where('status', 'Active')->count();
         $inactivePackagesCount =  Package::where('status', 'Inactive')->count();
         $trashedPackagesCount =  Package::onlyTrashed()->count();
-        return view('modules.packages.index', compact('packages', 'totalPackagesCount', 'activePackagesCount', 'inactivePackagesCount', 'trashedPackagesCount'));
+        return view('modules.packages.index', compact('packages', 'services', 'totalPackagesCount', 'activePackagesCount', 'inactivePackagesCount', 'trashedPackagesCount'));
     }
 
     public function store(Request $request)
@@ -34,6 +37,7 @@ class PackageController extends Controller
         $validatedData = $request->validate([
             'package_name' => 'required|string|max:255',
             'package_price' => 'required|numeric',
+            'service_id' => 'required|numeric',
             'item_name.*' => 'required|string|max:255',
             'item_price.*' => 'required|numeric',
         ]);
@@ -41,6 +45,7 @@ class PackageController extends Controller
         $package = new Package();
         $package->name = $validatedData['package_name'];
         $package->price = $validatedData['package_price'];
+        $package->service_id = $validatedData['service_id'];
         $package->save();
 
         $items = [];

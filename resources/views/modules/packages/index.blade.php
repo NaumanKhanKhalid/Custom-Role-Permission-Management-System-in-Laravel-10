@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('packages.index') }}" method="GET">
+                            <form action="{{ route('backend.packages.index') }}" method="GET">
                                 <div class="row">
 
 
@@ -141,7 +141,7 @@
                                                     <div class="d-flex">
                                                         @if (request('trashed'))
                                                             <form
-                                                                action="{{ route('package.permanent.delete', ['id' => $package->id]) }}"
+                                                                action="{{ route('backend.package.permanent.delete', ['id' => $package->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -152,7 +152,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('package.restore', ['id' => $package->id]) }}"
+                                                                action="{{ route('backend.package.restore', ['id' => $package->id]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('PUT')
@@ -171,7 +171,7 @@
                                                             </a>
 
                                                             <form
-                                                                action="{{ route('package.destroy', ['package' => $package]) }}"
+                                                                action="{{ route('backend.package.destroy', ['package' => $package]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -182,7 +182,7 @@
                                                                 </button>
                                                             </form>
                                                             <form
-                                                                action="{{ route('package.updateStatus', ['package' => $package]) }}"
+                                                                action="{{ route('backend.package.updateStatus', ['package' => $package]) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 <input type="hidden" name="status"
@@ -194,7 +194,7 @@
                                                                         class="feather {{ $package->status == 'Active' ? 'feather-x-circle text-danger' : 'feather-check-circle text-success' }}"></i>
                                                                 </button>
                                                             </form>
-                                                            <a href="{{ route('items.index', ['package' => $package]) }}"
+                                                            <a href="{{ route('backend.items.index', ['package' => $package]) }}"
                                                                 class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                                 data-bs-placement="top" title="View Items">
                                                                 <i class="feather feather-eye text-primary"></i>
@@ -216,7 +216,7 @@
             <div class="modal fade" id="newPackageModal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <form action="{{ route('package.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('backend.package.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Package</h5>
@@ -230,6 +230,19 @@
                                         <button type="button" class="btn btn-primary float-end" id="add-item">Add New
                                             Item</button>
                                     </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Servcies:</label>
+
+                                        <select name="service_id" class="form-control">
+                                            <option disabled selected>Select Service</option>
+                                            @foreach ($services as $service)
+                                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -250,7 +263,7 @@
                                         <input class="form-control" type="text" name="item_name[]"
                                             placeholder="Item Name" required>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <label class="form-label">Item Price:</label>
                                         <div class="input-group">
                                             <span class="input-group-text">$</span>
@@ -258,13 +271,7 @@
                                                 name="item_price[]" placeholder="Item Price" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
-                                        <label class="form-label"></label>
-                                        <!-- Initially hidden delete button for the first row -->
-                                        <button type="button" class="btn btn-danger btn-remove-item mt-4" data-item="1"
-                                            style="display: none;"><i
-                                                class="feather feather-trash sidemenu_icon"></i></button>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -337,13 +344,13 @@
                     var packageId = $(this).data('id');
 
                     $.ajax({
-                        url: "{{ route('package.edit', ':packageId') }}".replace(':packageId',
+                        url: "{{ route('backend.package.edit', ':packageId') }}".replace(':packageId',
                             packageId),
                         method: 'GET',
                         success: function(data) {
                             console.log(data);
                             $('#editPackageForm').attr('action',
-                                "{{ route('package.update', ':packageId') }}".replace(
+                                "{{ route('backend.package.update', ':packageId') }}".replace(
                                     ':packageId', packageId));
                             $('#editPackageName').val(data.name);
                             $('#editPackagePrice').val(data.price);

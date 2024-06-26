@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('users.index') }}" method="GET">
+                        <form action="{{ route('backend.users.index') }}" method="GET">
                             <div class="row">
 
                                 <div class="col-md-12 col-xl-5">
@@ -127,14 +127,14 @@
                         </form>
                     </div>
                     <div class="card-body">
-                       
+
                         <div class="table-responsive">
                             <table class="table table-vcenter text-nowrap table-bordered border-bottom"
                                 id="project-list">
                                 <thead>
                                     <tr>
-                                        <th class="border-bottom-0">#ID 
-                                        
+                                        <th class="border-bottom-0">#ID
+
                                         </th>
                                         <th class="border-bottom-0">Name</th>
 
@@ -184,7 +184,7 @@
 
                                                 @if(request('trashed'))
                                                 <form
-                                                    action="{{ route('user.permanent.delete', ['id' => $user->id]) }}"
+                                                    action="{{ route('backend.user.permanent.delete', ['id' => $user->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -195,7 +195,7 @@
                                                     </button>
                                                 </form>
 
-                                                <form action="{{ route('user.restore', ['id' => $user->id]) }}"
+                                                <form action="{{ route('backend.user.restore', ['id' => $user->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PUT')
@@ -208,17 +208,17 @@
 
                                                 </form>
                                                 @else
-                                                <a href="{{ route('user.show',['user'=> $user]) }}"
+                                                <a href="{{ route('backend.user.show',['user'=> $user]) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="View User"><i
                                                         class="feather feather-eye text-primary"></i></a>
 
 
-                                                <a href="{{ route('user.edit',['user'=> $user]) }}"
+                                                <a href="{{ route('backend.user.edit',['user'=> $user]) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="Edit User"><i
                                                         class="feather feather-edit-2  text-success"></i></a>
-                                                <form action="{{ route('user.destroy', ['user' => $user]) }}"
+                                                <form action="{{ route('backend.user.destroy', ['user' => $user]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -229,7 +229,7 @@
                                                     </button>
                                                 </form>
 
-                                                <form action="{{ route('user.updateStatus', ['user' => $user]) }}"
+                                                <form action="{{ route('backend.user.updateStatus', ['user' => $user]) }}"
                                                     method="post">
                                                     @csrf
                                                     <input type="hidden" name="status"
@@ -260,7 +260,7 @@
         <div class="modal fade" id="newUserModal">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('backend.user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">Add New User</h5>

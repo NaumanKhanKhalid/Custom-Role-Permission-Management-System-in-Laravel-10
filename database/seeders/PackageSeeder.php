@@ -13,6 +13,7 @@ class PackageSeeder extends Seeder
         $packages = [
 
             [
+                'service_id' => 1,
                 'name' => 'Google Services',
                 'price' => 100,
                 'status' => 'Active',

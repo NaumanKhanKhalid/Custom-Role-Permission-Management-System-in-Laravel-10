@@ -12,7 +12,7 @@
             <div class="page-rightheader ms-md-auto">
                 <div class="d-flex align-items-end flex-wrap my-auto end-content breadcrumb-end">
                     <div class="btn-list">
-                        <a href="{{ route('role.create') }}" class="btn btn-primary"><i
+                        <a href="{{ route('backend.role.create') }}" class="btn btn-primary"><i
                                 class="feather feather-plus fs-15 my-auto me-2"></i>Create
                             New Role</a>
 
@@ -71,7 +71,7 @@
                                             <div class="d-flex">
 
                                                 @if(request('trashed'))
-                                                <form action="{{ route('role.permanent.delete', ['id' => $role->id]) }}"
+                                                <form action="{{ route('backend.role.permanent.delete', ['id' => $role->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -82,7 +82,7 @@
                                                     </button>
                                                 </form>
 
-                                                <form action="{{ route('role.restore', ['id' => $role->id]) }}"
+                                                <form action="{{ route('backend.role.restore', ['id' => $role->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('PUT')
@@ -97,17 +97,17 @@
                                                 @else
 
 
-                                                <a href="{{ route('role.edit',$role->id) }}"
+                                                <a href="{{ route('backend.role.edit',$role->id) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="Edit Role"><i
                                                         class="feather feather-edit-2 text-success"></i></a>
 
 
-                                                <a href="{{ route('permission.show',$role->id) }}"
+                                                <a href="{{ route('backend.permission.show',$role->id) }}"
                                                     class="action-btns1 bg-white" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="View Permissions"><i
                                                         class="feather feather-lock text-primary"></i></a>
-                                                <form action="{{ route('role.destroy', ['role' => $role]) }}"
+                                                <form action="{{ route('backend.role.destroy', ['role' => $role]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')

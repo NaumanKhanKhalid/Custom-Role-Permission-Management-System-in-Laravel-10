@@ -11,7 +11,6 @@ class ServiceController extends Controller
 {
     public function index(Request $request)
     {
-
         $query = Service::query();
 
         // Include trashed users if the 'trashed' parameter is present and true
@@ -76,7 +75,7 @@ class ServiceController extends Controller
         $service = Service::find($service_id);
         return response()->json($service);
     }
-    
+
     public function destroy(Service $service)
     {
         try {
