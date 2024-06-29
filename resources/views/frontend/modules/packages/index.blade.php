@@ -15,7 +15,8 @@
                                 </a>
                                 <div class="checkbox-ct">
                                     <label class="ct-container">
-                                        <input type="checkbox" value="{{ $package->price }}" onchange="calculateTotal();" class="package-checkbox">
+                                        <input type="checkbox" value="{{ $package->price }}" data-package-id="{{ $package->id }}"
+                                            onchange="selectPackage({{ $package->id }});" class="package-checkbox">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -25,7 +26,8 @@
                                     @foreach ($package->items as $item)
                                         <li>
                                             <label class="ct-container">{{ $item->name }}
-                                                <input type="checkbox" value="{{ $item->price }}" onchange="calculateTotal();" class="item-checkbox">
+                                                <input type="checkbox" value="{{ $item->price }}" data-item-id="{{ $item->id }}"
+                                                    data-package-id="{{ $package->id }}" onchange="calculateTotal();" class="item-checkbox">
                                                 <span class="checkmark"></span>
                                             </label>
                                             <p>AED {{ $item->price }}</p>
@@ -44,10 +46,14 @@
                     <p id="grand-total">AED 0</p>
                 </div>
                 <div class="total-amount-cart mt-lg-0 mt-2">
-                    <a href="javascript:;" class="w-100" id="submit-btn" onclick="initiatePayPalPayment()">
-                        <i class="fa fa-check"></i>
-                        <p>Pay with PayPal</p>
-                    </a>
+                    @if (Auth::check())
+                        <a href="javascript:;" class="w-100" id="submit-btn">
+                            <i class="fa fa-check"></i>
+                            <p>Order Now</p>
+                        </a>
+                    @else
+                        <a href="{{ route('showLoginForm') }}">Login First!</a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -56,47 +62,23 @@
 
 @push('scripts')
     <script>
-        // PayPal SDK script initialization
-        var paypalScriptLoaded = false;
-        function loadPayPalScript(callback) {
-            if (!paypalScriptLoaded) {
-                paypalScriptLoaded = true;
-                var script = document.createElement('script');
-                script.src = 'https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=AED';
-                script.onload = callback;
-                document.body.appendChild(script);
-            } else {
-                callback();
-            }
-        }
-
-        function initiatePayPalPayment() {
-            loadPayPalScript(function() {
-                // Replace with your PayPal client ID
-                paypal.Buttons({
-                    createOrder: function(data, actions) {
-                        return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                    value: $('#grand-total').text().replace('AED ', '') // Total amount to be paid
-                                }
-                            }]
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(function(details) {
-                            alert('Transaction completed by ' + details.payer.name.given_name);
-                            // You can redirect to a success page or handle further processing here
-                        });
-                    }
-                }).render('#paypal-button-container');
-            });
+        function selectPackage(packageId) {
+            var isChecked = $('input[data-package-id="' + packageId + '"]').prop('checked');
+            $('input[data-package-id="' + packageId + '"]').prop('checked', isChecked);
+            calculateTotal();
         }
 
         function calculateTotal() {
             var totalAmount = 0;
 
-            $('.package-checkbox:checked, .item-checkbox:checked').each(function() {
+            $('.package-checkbox:checked').each(function() {
+                totalAmount += parseFloat($(this).val());
+
+                var packageId = $(this).data('package-id');
+                $('.item-checkbox[data-package-id="' + packageId + '"]').prop('checked', true);
+            });
+
+            $('.item-checkbox:checked').each(function() {
                 totalAmount += parseFloat($(this).val());
             });
 
@@ -109,8 +91,7 @@
                 $('#accordion-' + packageId).slideToggle(300);
             });
 
-            // Initial calculation when the page loads
-            calculateTotal();
+           
         });
     </script>
 @endpush

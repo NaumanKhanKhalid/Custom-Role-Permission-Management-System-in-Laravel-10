@@ -8,11 +8,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
+use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 
 Route::get('/', function () {
-    return redirect()->route('backend.dashboard');
+    return redirect()->route('services.index');
 });
 
 // Login Route
@@ -114,7 +116,13 @@ Route::middleware('auth.check')->group(function () {
 
 
     });
+
+
+
+Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+
 });
 
 // ========== Frontend  Routes End ==========
@@ -125,4 +133,11 @@ Route::prefix('services')->group(function () {
 Route::prefix('packages')->group(function () {
     Route::get('/{service}', [FrontendPackageController::class, 'index'])->name('packages.index');
 });
+
+
+Route::prefix('chats')->group(function () {
+Route::get('/', [FrontendChatController::class, 'index'])->name('chat.index');
+Route::post('create', [FrontendChatController::class, 'store'])->name('chat.store');
+});
+
 // ========== Frontend  Routes End ==========

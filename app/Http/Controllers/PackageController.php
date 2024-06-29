@@ -46,6 +46,7 @@ class PackageController extends Controller
         $package->name = $validatedData['package_name'];
         $package->price = $validatedData['package_price'];
         $package->service_id = $validatedData['service_id'];
+
         $package->save();
 
         $items = [];
@@ -90,6 +91,8 @@ class PackageController extends Controller
             }
 
             DB::commit();
+
+
 
             return redirect()->route('packages.index')->with('success', 'Package updated successfully!');
         } catch (\Exception $e) {

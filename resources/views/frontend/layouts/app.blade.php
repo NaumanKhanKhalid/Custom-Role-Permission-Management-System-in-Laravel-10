@@ -27,7 +27,7 @@
 
         @yield('content')
 
-        @include('frontend.layouts.chat')
+        @include('frontend.chat.index')
         @include('frontend.layouts.footer')
     </main>
 </body>
