@@ -6,12 +6,14 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return redirect()->route('services.index');
@@ -20,6 +22,11 @@ Route::get('/', function () {
 // Login Route
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('showLoginForm');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+
+Route::get('register', [AuthController::class, 'showregisterForm'])->name('showregisterForm');
+Route::post('register', [AuthController::class, 'register'])->name('register');
+
+
 Route::get('forget-password', [AuthController::class, 'showForgetForm'])->name('show.forget.form');
 Route::post('forget-password', [AuthController::class, 'forgetPassword'])->name('forget.password');
 Route::get('reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
@@ -115,14 +122,22 @@ Route::middleware('auth.check')->group(function () {
 
 
 
+        // ========== Orders Module Routes End ==========
+
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [OrderController::class, 'index'])->name('backend.orders.index');
+            Route::get('/{orderId}', [OrderController::class, 'show'])->name('orders.show');
+            Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+            Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
+
+        });
+        // ========== Orders Module Routes End ==========
+
+
     });
 
-
-
-Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
+    Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-
 });
 
 // ========== Frontend  Routes End ==========
@@ -135,9 +150,15 @@ Route::prefix('packages')->group(function () {
 });
 
 
+// Guest chat routes
 Route::prefix('chats')->group(function () {
-Route::get('/', [FrontendChatController::class, 'index'])->name('chat.index');
-Route::post('create', [FrontendChatController::class, 'store'])->name('chat.store');
+    Route::get('/', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('create', [ChatController::class, 'store'])->name('chat.store');
 });
+
+// Admin chat routes
+Route::get('admin/chat', [ChatController::class, 'adminIndex'])->name('backend.chat.index');
+Route::post('admin/chat', [ChatController::class, 'adminStore'])->name('backend.chat.store');
+
 
 // ========== Frontend  Routes End ==========

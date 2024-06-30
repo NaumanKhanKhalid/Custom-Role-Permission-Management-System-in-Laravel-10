@@ -51,7 +51,9 @@
                                             <button class="btn btn-primary btn-block" type="submit">Login</button>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <p class="mb-2"><a href="{{ route('show.forget.form') }}">Forgot Password</a></p>
+                                            {{-- <p class="mb-2"><a href="{{ route('show.forget.form') }}">Forgot Password</a></p> --}}
+                                            <p class="mb-2">Not have an account? <a href="{{ route('showregisterForm') }}">Register here</a></p>
+
                                         </div>
                                     </form>
 

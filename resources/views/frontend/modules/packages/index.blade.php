@@ -15,7 +15,8 @@
                                 </a>
                                 <div class="checkbox-ct">
                                     <label class="ct-container">
-                                        <input type="checkbox" value="{{ $package->price }}" data-package-id="{{ $package->id }}"
+                                        <input type="checkbox" value="{{ $package->price }}"
+                                            data-package-id="{{ $package->id }}"
                                             onchange="selectPackage({{ $package->id }});" class="package-checkbox">
                                         <span class="checkmark"></span>
                                     </label>
@@ -26,8 +27,10 @@
                                     @foreach ($package->items as $item)
                                         <li>
                                             <label class="ct-container">{{ $item->name }}
-                                                <input type="checkbox" value="{{ $item->price }}" data-item-id="{{ $item->id }}"
-                                                    data-package-id="{{ $package->id }}" onchange="calculateTotal();" class="item-checkbox">
+                                                <input type="checkbox" value="{{ $item->price }}"
+                                                    data-item-id="{{ $item->id }}"
+                                                    data-package-id="{{ $package->id }}" onchange="calculateTotal();"
+                                                    class="item-checkbox">
                                                 <span class="checkmark"></span>
                                             </label>
                                             <p>AED {{ $item->price }}</p>
@@ -63,23 +66,31 @@
 @push('scripts')
     <script>
         function selectPackage(packageId) {
-            var isChecked = $('input[data-package-id="' + packageId + '"]').prop('checked');
-            $('input[data-package-id="' + packageId + '"]').prop('checked', isChecked);
+            var isChecked = $('input[data-package-id="' + packageId + '"].package-checkbox').prop('checked');
+
+            // Check/uncheck all items within the package
+            $('.item-checkbox[data-package-id="' + packageId + '"]').prop('checked', isChecked);
+
             calculateTotal();
         }
 
         function calculateTotal() {
             var totalAmount = 0;
 
+            // Calculate the total for selected packages
             $('.package-checkbox:checked').each(function() {
                 totalAmount += parseFloat($(this).val());
-
-                var packageId = $(this).data('package-id');
-                $('.item-checkbox[data-package-id="' + packageId + '"]').prop('checked', true);
             });
 
-            $('.item-checkbox:checked').each(function() {
-                totalAmount += parseFloat($(this).val());
+            // Calculate the total for individually selected items
+            $('.item-checkbox').each(function() {
+                var packageId = $(this).data('package-id');
+                // Only add item price if the package itself is not selected
+                if (!$('input[data-package-id="' + packageId + '"].package-checkbox').prop('checked')) {
+                    if ($(this).prop('checked')) {
+                        totalAmount += parseFloat($(this).val());
+                    }
+                }
             });
 
             $('#grand-total').text('AED ' + totalAmount.toFixed(2));
@@ -91,7 +102,58 @@
                 $('#accordion-' + packageId).slideToggle(300);
             });
 
-           
+            $('#submit-btn').click(function() {
+                var selectedItems = [];
+                var totalAmount = parseFloat($('#grand-total').text().replace('AED ', ''));
+
+                $('.package-checkbox:checked').each(function() {
+                    var packageId = $(this).data('package-id');
+                    selectedItems.push({
+                        id: packageId,
+                        type: 'package',
+                        price: parseFloat($(this).val())
+                    });
+
+                    // Add all items of this package as individual items
+                    $('.item-checkbox[data-package-id="' + packageId + '"]:checked').each(
+                function() {
+                        selectedItems.push({
+                            id: $(this).data('item-id'),
+                            type: 'item',
+                            price: parseFloat($(this).val())
+                        });
+                    });
+                });
+
+                $('.item-checkbox:checked').each(function() {
+                    var packageId = $(this).data('package-id');
+                    if (!$('input[data-package-id="' + packageId + '"].package-checkbox').prop(
+                            'checked')) {
+                        selectedItems.push({
+                            id: $(this).data('item-id'),
+                            type: 'item',
+                            price: parseFloat($(this).val())
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: '{{ route('order.store') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        total_price: totalAmount,
+                        items: selectedItems
+                    },
+                    success: function(response) {
+                        flasher.success(response.message);
+                    },
+                    error: function(response) {
+                        flasher.error('Error placing order')
+                        alert('Error placing order');
+                    }
+                });
+            });
         });
     </script>
 @endpush

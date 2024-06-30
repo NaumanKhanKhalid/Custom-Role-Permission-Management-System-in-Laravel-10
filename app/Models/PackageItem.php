@@ -10,7 +10,12 @@ class PackageItem extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['package_id', 'name', 'price','status'];
+    protected $fillable = ['package_id', 'name', 'price', 'status'];
+
+    // public function package()
+    // {
+    //     return $this->belongsTo(Package::class);
+    // }
 
     public function package()
     {

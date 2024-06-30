@@ -19,29 +19,38 @@ class UserSeeder extends Seeder
 
         $users = [
             [
+                'first_name' => 'Noman',
+                'last_name' => 'Khan',
+                'profile_picture' => "avatar.jpg",
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
                 'role_id' => $adminRole->id,
-               
-                
+
+
             ],[
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'profile_picture' => "avatar.jpg",
                 'email' => 'vendor@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
                 'role_id' => $vendorRole->id,
-             
+
 
             ],
             [
+                'first_name' => 'Mick',
+                'last_name' => 'blue',
+                'profile_picture' => "avatar.jpg",
                 'email' => 'client@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
                 'role_id' => $clientRole->id,
-               
+
             ],
         ];
         User::insert($users);

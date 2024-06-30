@@ -17,6 +17,12 @@
     <link href="{{ asset('frontend-assets/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend-assets/css/style2.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard-assets/assets/css/icons.css') }}" rel="stylesheet" />
+
+    <link href="{{ asset('vendor/flasher/flasher.min.css') }}" rel="stylesheet" />
+
+
+        <!-- Notifications js -->
+
     @stack('styles')
 </head>
 
@@ -34,5 +40,6 @@
 
 </html>
 <script></script>
+<script src="{{ asset('vendor/flasher/flasher.min.js') }}"></script>
 <script src="{{ asset('dashboard-assets/assets/plugins/jquery/jquery.min.js') }}"></script>
 @stack('scripts')

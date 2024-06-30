@@ -15,7 +15,7 @@
                         @else
                             <a href="{{ route('showLoginForm') }}"
                                 class="btn view__all px-lg-4 px-3 btn-sm btn-primary text-decoration-none text-white">Log In</a>
-                                <a href=""
+                                <a href="{{route('showregisterForm')}}"
                                 class="btn view__all px-lg-4 px-3 btn-sm btn-primary text-decoration-none text-white">Register</a>
                         @endif
                     </div>

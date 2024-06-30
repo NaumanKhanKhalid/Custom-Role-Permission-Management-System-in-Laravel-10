@@ -10,5 +10,10 @@ class Service extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name','icon','description','status'];
+    protected $fillable = ['name', 'icon', 'description', 'status'];
+
+    public function packages()
+    {
+        return $this->hasMany(Package::class);
+    }
 }

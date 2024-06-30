@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserBasicInformation;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,46 @@ class AuthController extends Controller
 
         return back()->withInput()->withErrors(['email' => 'Invalid email or password']);
     }
+
+
+
+    public function showregisterForm()
+    {
+        return view('auth.register');
+    }
+    public function register(Request $request)
+    {
+        $request->validate([
+
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate profile picture
+        ]);
+
+        $profilePicturePath = null;
+        if ($request->hasFile('profile_picture')) {
+            $profilePicture = $request->file('profile_picture');
+            $profilePicturePath = $profilePicture->store('profile_pictures', 'public');
+        }
+
+
+        $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => 3,
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'profile_picture' => $profilePicturePath,
+        ]);
+
+        Auth::login($user);
+
+
+        return redirect()->route('services.index');
+    }
+
 
     public function logout(Request $request)
     {
