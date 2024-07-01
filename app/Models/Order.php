@@ -11,7 +11,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'assigned_to', 'status', 'total_price'];
+    protected $fillable = ['user_id', 'assigned_to', 'status', 'total_price','total_progress_percentage'];
 
     public function client()
     {

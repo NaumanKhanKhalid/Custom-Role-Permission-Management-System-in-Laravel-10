@@ -57,11 +57,13 @@
     <!-- INTERNAL Ratings css -->
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/ratings.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/rating-themes.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/scss/bootstrap/_progress.scss') }}">
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Icon Picker CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/css/fontawesome-iconpicker.min.css">
     @stack('styles')
+    
 </head>
 
 <body class="app sidebar-mini">

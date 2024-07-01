@@ -14,6 +14,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('cascade'); // Corrected
             $table->enum('status', ['Pending', 'Approved', 'Assigned', 'In Progress', 'Rejected', 'Cancelled'])->default('Pending');
             $table->decimal('total_price', 10, 2);
+            $table->integer('total_progress_percentage')->default(0);
             $table->timestamps();
         });
     }

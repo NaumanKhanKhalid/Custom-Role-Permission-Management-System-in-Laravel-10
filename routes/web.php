@@ -129,6 +129,9 @@ Route::middleware('auth.check')->group(function () {
             Route::get('/{orderId}', [OrderController::class, 'show'])->name('orders.show');
             Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
             Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
+            Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
+            Route::post('/update-progress', [OrderController::class, 'updateProgress'])->name('orders.updateProgress');
+
 
         });
         // ========== Orders Module Routes End ==========

@@ -12,8 +12,9 @@ class CreateOrderItemsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('item_id')->constrained('package_items')->onDelete('cascade'); // Ensure correct referencing
-            $table->string('item_type'); // 'package' or 'individual'
+            $table->string('item_type');
             $table->decimal('price', 10, 2);
+            $table->integer('progress_percentage')->default(0);
             $table->timestamps();
         });
     }
