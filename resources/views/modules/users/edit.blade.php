@@ -21,7 +21,7 @@
                                 src="../../assets/images/users/1.jpg">
                         </div>
                         <div class="pro-user mt-3">
-                            <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->basic_info->fullName() }}</h5>
+                            <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->fullName() }}</h5>
                             <h6 class="pro-user-desc text-muted fs-12">{{ $user->role->name }}</h6>
                         </div>
 
@@ -52,31 +52,16 @@
                                         <div class="col-md-6">
                                             <label class="form-label mb-0 mt-2">First Name</label>
                                             <input type="text" class="form-control" placeholder="First Name"
-                                                name="first_name" value="{{ $user->basic_info->first_name }}">
+                                                name="first_name" value="{{ $user->first_name }}">
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label mb-0 mt-2">Last Name</label>
                                             <input type="text" name="last_name" class="form-control"
-                                                placeholder="Last Name" value="{{ $user->basic_info->last_name }}">
+                                                placeholder="Last Name" value="{{ $user->last_name }}">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Contact Number</label>
-                                            <input type="text" name="phone" class="form-control"
-                                                placeholder="Phone Number" value="{{ $user->basic_info->phone }}">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label mb-0 mt-2">Date Of Birth</label>
-                                            <input type="text" name="dob" class="form-control fc-datepicker"
-                                                placeholder="DD-MM-YYY" value="{{ $user->basic_info->dob }}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label class="form-label mb-0 mt-2">Address</label>
-                                        <textarea rows="3" name="address" class="form-control"
-                                            placeholder="Address1">{{ $user->basic_info->address }}</textarea>
-                                    </div>
+
+
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label class="form-label mb-0 mt-2">Upload Photo</label>

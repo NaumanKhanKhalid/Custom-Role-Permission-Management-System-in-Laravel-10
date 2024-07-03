@@ -24,7 +24,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'status',
-    'profile_picture',
+        'profile_picture',
     ];
 
     public function role()
@@ -37,6 +37,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'user_id');
     }
-
-
+    public function fullName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

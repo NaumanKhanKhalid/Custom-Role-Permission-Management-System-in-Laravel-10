@@ -77,9 +77,21 @@
                                                         {{ $order->status }}
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    {{ $order->progress_percentage }}
+                                                <td class="align-middle" style="width: 14%; ">
+                                                    <div class="float-end">
+                                                        <h6 class="mb-2 ms-4 fw-semibold">{{ $order->progress_percentage }}%
+                                                        </h6>
+                                                    </div>
+                                                    <div class="progress progress-sm mb-0 mt-1">
+                                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                            style="width: {{ $order->progress_percentage }}%"></div>
+                                                    </div>
+
                                                 </td>
+
+
+
+
                                                 <td>{{ $order->assignedUser ? $order->assignedUser->first_name . ' ' . $order->assignedUser->last_name : 'Not Assigned' }}
                                                 </td>
 
@@ -93,14 +105,23 @@
                                                             <i class="feather feather-eye text-primary"></i>
                                                         </a>
 
+                                                        @if (Auth::user()->role->name == 'Admin' && $order->status == 'Pending')
+                                                            <a href="#" data-order-id="{{ $order->id }}"
+                                                                class="action-btns1 bg-white assign-vendor-btn"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                title="Assign Vendor">
+                                                                <i class="feather feather-user-plus text-primary"></i>
+                                                            </a>
+                                                        @endif
+
 
                                                         @if (in_array(Auth::user()->role->name, ['Admin', 'Vendor']))
-                                                        <a href="#" data-order-id="{{ $order->id }}"
-                                                            class="action-btns1 bg-white update-item-progress-btn"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            title="Update Progress">
-                                                            <i class="feather feather-edit-2 text-primary"></i>
-                                                        </a>
+                                                            <a href="#" data-order-id="{{ $order->id }}"
+                                                                class="action-btns1 bg-white update-item-progress-btn"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                title="Update Progress">
+                                                                <i class="feather feather-edit-2 text-primary"></i>
+                                                            </a>
 
                                                             <div class="dropdown ms-2">
                                                                 <button
@@ -115,13 +136,12 @@
                                                                     @foreach ($statusActions[$order->status] as $action)
                                                                         @if ($action === 'Assigned')
                                                                             <li>
-                                                                                <a href="#"
-                                                                                    class="dropdown-item assign-vendor-btn"
+                                                                                <button type="button" class="dropdown-item"
                                                                                     data-order-id="{{ $order->id }}"
                                                                                     data-bs-toggle="modal"
                                                                                     data-bs-target="#assignVendorModal">
                                                                                     {{ $action }}
-                                                                                </a>
+                                                                                </button>
                                                                             </li>
                                                                         @else
                                                                             <li>
@@ -151,8 +171,8 @@
                                 </table>
 
                                 <!-- Assign Vendor Modal -->
-                                <div class="modal fade" id="assignVendorModal" tabindex="-1"
-                                    aria-labelledby="assignVendorModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="AssignVendorModal" tabindex="-1"
+                                    aria-labelledby="AssignVendorModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <form action="{{ route('orders.assign') }}" method="POST">
                                             @csrf
@@ -173,11 +193,12 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <input type="text" name="order_id" class="assign_order_id">
+                                                <input type="hidde" name="order_id" class="assign_order_id">
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Assign To Vendor</button>
+                                                    <button type="submit" class="btn btn-primary">Assign To
+                                                        Vendor</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -191,7 +212,8 @@
             </div>
         </div>
 
-        <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -224,7 +246,7 @@
         </div>
         <div class="modal fade" id="updateItemProgressModal" tabindex="-1"
             aria-labelledby="updateItemProgressModalLabel" aria-hidden="true">
-            <div class="modal-dialog  modal-lg">
+            <div class="modal-dialog modal-lg">
                 <form id="updateItemProgressForm" action="{{ route('orders.updateProgress') }}" method="POST">
                     @csrf
                     <div class="modal-content">
@@ -233,10 +255,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <div id="orderItemsContainer">
-                            </div>
-
+                        <div class="modal-body" id="orderItemsContainer">
+                            <!-- Dynamic content will be inserted here -->
                         </div>
                         <div class="modal-footer">
                             <input type="hidden" name="order_id" class="progress_order_id">
@@ -278,12 +298,51 @@
                                         item.price + '">' +
                                         '</div>' +
                                         '<div class="col-md-4">' +
-                                        '<label class="form-label">Progress:</label>' +
-                                        '<input class="form-control" type="number" readonly value="' +
-                                        item.progress_percentage + '">' +
+                                        '<input type="hidden" name="item_ids[]" value="' + item
+                                        .id + '">' +
+                                        '<div id="slider-' + item.id +
+                                        '" class="noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr"></div>' +
+                                        '<input type="hidden" id="progress-percentage-' + item
+                                        .id + '" name="progress_percentage[]" value="' + item
+                                        .progress_percentage + '">' +
+                                        '<div id="slider-value-' + item.id +
+                                        '" class="value-display">' + item.progress_percentage +
+                                        '%</div>' +
                                         '</div>' +
                                         '</div>';
+
                                     $('#orderedItemsContainer').append(itemHtml);
+
+                                    // Initialize slider for this item
+                                    var slider = document.getElementById('slider-' + item.id);
+                                    var sliderValue = document.getElementById('slider-value-' +
+                                        item.id);
+                                    var hiddenInput = document.getElementById(
+                                        'progress-percentage-' + item.id);
+
+                                    noUiSlider.create(slider, {
+                                        start: [item.progress_percentage],
+                                        range: {
+                                            'min': 0,
+                                            'max': 100
+                                        },
+                                        tooltips: false,
+                                        connect: [true, false]
+                                    });
+
+                                    // Disable slider handles (make read-only)
+                                    slider.noUiSlider.updateOptions({
+                                        start: [item
+                                            .progress_percentage
+                                        ], // Ensure the start value is set
+                                        disabled: true // Disable user interaction
+                                    });
+
+                                    slider.noUiSlider.on('update', function(values, handle) {
+                                        var intValue = parseInt(values[handle]);
+                                        sliderValue.innerHTML = intValue + '%';
+                                        hiddenInput.value = intValue;
+                                    });
                                 });
 
                                 $('#viewOrderModal').modal('show');
@@ -298,11 +357,12 @@
                         e.preventDefault();
                         var orderId = $(this).data('order-id');
                         $('.assign_order_id').val(orderId);
+                        $('#AssignVendorModal').modal('show');
                     });
-
 
                     $('.update-item-progress-btn').click(function() {
                         var orderId = $(this).data('order-id');
+                        $('.progress_order_id').val(orderId);
 
                         $.ajax({
                             url: "{{ route('orders.show', '') }}" + "/" + orderId,
@@ -325,19 +385,42 @@
                                         item.price + '">' +
                                         '</div>' +
                                         '<div class="col-md-4">' +
-                                        '<label for="progress_percentage_' + item.id +
-                                        '">Progress Percentage:</label>' +
-                                        '<input class="form-control" id="progress_percentage_' +
-                                        item.id +
-                                        '" name="progress_percentage[]" type="number" min="0" max="100" value="' +
-                                        item.progress_percentage + '">' +
                                         '<input type="hidden" name="item_ids[]" value="' + item
                                         .id + '">' +
+                                        '<div id="slider-' + item.id +
+                                        '" class="noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr"></div>' +
+                                        '<input type="hidden" id="progress-percentage-' + item
+                                        .id + '" name="progress_percentage[]" value="' + item
+                                        .progress_percentage + '">' +
+                                        '<div id="slider-value-' + item.id +
+                                        '" class="value-display">' + item.progress_percentage +
+                                        '%</div>' +
                                         '</div>' +
                                         '</div>';
 
                                     $('#orderItemsContainer').append(itemHtml);
-                                    $('.progress_order_id').val(orderId);
+
+                                    var slider = document.getElementById('slider-' + item.id);
+                                    var sliderValue = document.getElementById('slider-value-' +
+                                        item.id);
+                                    var hiddenInput = document.getElementById(
+                                        'progress-percentage-' + item.id);
+
+                                    noUiSlider.create(slider, {
+                                        start: [item.progress_percentage],
+                                        range: {
+                                            'min': 0,
+                                            'max': 100
+                                        },
+                                        tooltips: false,
+                                        connect: [true, false]
+                                    });
+
+                                    slider.noUiSlider.on('update', function(values, handle) {
+                                        var intValue = parseInt(values[handle]);
+                                        sliderValue.innerHTML = intValue + '%';
+                                        hiddenInput.value = intValue;
+                                    });
                                 });
 
                                 $('#updateItemProgressModal').modal('show');
@@ -347,7 +430,6 @@
                             }
                         });
                     });
-
                 });
             </script>
         @endpush

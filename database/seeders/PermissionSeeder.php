@@ -26,6 +26,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'view_items'],
             ['name' => 'edit_item'],
             ['name' => 'delete_item'],
+            ['name' => 'create_role'],
+            ['name' => 'view_roles'],
+            ['name' => 'edit_role'],
+            ['name' => 'delete_role'],
         ];
 
         Permission::insert($permissions);

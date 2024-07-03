@@ -11,7 +11,7 @@
     <!--Favicon -->
     <link rel="icon" href="{{ asset('dashboard-assets/assets/images/brand/favicon.ico') }}" type="image/x-icon" />
     <!-- Bootstrap css -->
-        <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet"
+    <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet"
         id="style" />
     <!-- Style css -->
     <link href="{{ asset('dashboard-assets/assets/css/style.css') }}" rel="stylesheet" />
@@ -61,9 +61,42 @@
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Icon Picker CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/css/fontawesome-iconpicker.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/css/fontawesome-iconpicker.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
+<style>
+    .noUi-target {
+    background: #FAFAFA;
+    border-radius: 4px;
+    border: 1px solid #D3D3D3;
+    box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+    width: 90%;
+    top: 36px !important;
+}
+
+.noUi-horizontal {
+    height: 13px;
+}
+
+.noUi-horizontal .noUi-handle {
+    width: 19px;
+    height: 20px;
+    right: -17px;
+    top: -6px;
+}
+
+.noUi-handle {
+    border: 1px solid #D9D9D9;
+    border-radius: 60px;
+    background: #FFF;
+    cursor: default;
+    box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+}
+</style>
     @stack('styles')
-    
+
 </head>
 
 <body class="app sidebar-mini">
@@ -86,7 +119,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
-                        Copyright © 2024   All rights reserved.
+                        Copyright © 2024 All rights reserved.
                     </div>
                 </div>
             </div>
@@ -532,8 +565,13 @@
     <script src="{{ asset('dashboard-assets/assets/js/custom.js') }}"></script>
 
     <script src="{{ asset('dashboard-assets/assets/plugins/rating/js/jquery.barrating.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js">
 
+
+    </script>
+
+{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet"> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script> --}}
 
     @if ($errors->any())
         @foreach ($errors->all() as $index => $error)

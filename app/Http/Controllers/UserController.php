@@ -19,7 +19,7 @@ class UserController extends Controller
     {
 
         $roles = Role::all();
-        $query = User::whereNot('id', Auth::user()->id)->with('role', 'basic_info');
+        $query = User::whereNot('id', Auth::user()->id)->with('role');
 
         // Filtering based on role
         if ($request->has('role') && $request->role !== null) {
@@ -48,13 +48,13 @@ class UserController extends Controller
     public function create()
     {
     }
-  
+
     public function store(UserRequest $request)
     {
         try {
-            
+
             DB::beginTransaction();
-            
+
             $profilePicturePath = null;
             if ($request->hasFile('profile_picture')) {
                 $image = $request->file('profile_picture');
@@ -84,7 +84,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User created successfully!');
         } catch (\Exception $e) {
-            
+
             DB::rollback();
             return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.');
         }
@@ -92,13 +92,13 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $user->load('basic_info');
+
         return view('modules.users.view', compact('user'));
     }
 
     public function edit(User $user)
     {
-        $user->load('basic_info');
+        // $user->load('basic_info');
         return view('modules.users.edit', compact('user'));
     }
 

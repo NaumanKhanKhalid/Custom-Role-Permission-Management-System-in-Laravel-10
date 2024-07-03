@@ -36,20 +36,25 @@
                     <span class="side-menu__label"><span class="nav-list">Dashboard</span></span>
                 </a>
             </li>
-            @can('user_management', 'view_users')
-                <li class="slide ">
-                    <a class="side-menu__item" data-bs-toggle="slide" href="#">
-                        <i class="feather feather-users sidemenu_icon"></i>
-                        <span class="side-menu__label">Users</span><i class="angle fa fa-angle-right"></i></a>
-                    <ul class="slide-menu">
-                        @can('user_management', 'view_users')
-                            <li><a href="{{ route('backend.users.index') }}" class="slide-item">Users</a></li>
-                        @endcan
 
-                        <li><a href="{{ route('backend.role.index') }}" class="slide-item">Roles</a></li>
-                    </ul>
-                </li>
-            @endcan
+            @if( Gate::check('user_management', 'view_users') || Gate::check('role_management', 'view_roles'))
+            {{-- @can('user_management', 'view_users|role_management', 'view_roles') --}}
+            <li class="slide">
+                <a class="side-menu__item" data-bs-toggle="slide" href="#">
+                    <i class="feather feather-users sidemenu_icon"></i>
+                    <span class="side-menu__label">Users</span><i class="angle fa fa-angle-right"></i>
+                </a>
+                <ul class="slide-menu">
+                    @can('user_management', 'view_users')
+                        <li><a href="{{ route('backend.users.index') }}" class="slide-item">Users</a></li>
+                    @endcan
+
+                    @can('role_management', 'view_roles')
+                        <li><a href="{{ route('backend.roles.index') }}" class="slide-item">Roles</a></li>
+                    @endcan
+                </ul>
+            </li>
+        @endif
             @can('service_management', 'view_services')
                 <li class="slide">
                     <a class="side-menu__item" href="{{ route('backend.services.index') }}">
@@ -112,7 +117,7 @@
                     </a>
                     <ul class="slide-menu">
                         @can('user_management', 'view_users')
-                            <li><a href="{{ route('backend.role.index', ['trashed' => true]) }}"
+                            <li><a href="{{ route('backend.roles.index', ['trashed' => true]) }}"
                                     class="slide-item">Roles</a></li>
                             <li><a href="{{ route('backend.users.index', ['trashed' => true]) }}"
                                     class="slide-item">Users</a></li>

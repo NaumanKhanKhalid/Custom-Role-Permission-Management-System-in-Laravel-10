@@ -48,7 +48,7 @@ class RoleController extends Controller
             $role = Role::create(['name' => $request->name]);
             $role->permissions()->attach($request->permission);
             DB::commit();
-            return redirect()->route('role.index')->with('success', 'Role created successfully!');
+            return redirect()->route('backend.roles.index')->with('success', 'Role created successfully!');
         } catch (\Exception $e) {
             DB::rollback();
             return back()->withInput()->with('error', 'Failed to create role. Please try again.');
@@ -62,7 +62,7 @@ class RoleController extends Controller
     public function edit(string $id)
     {
         $role = Role::with('permissions')->where('id', $id)->first();
-        
+
         return view('modules.roles.edit', compact('role'));
     }
 
@@ -74,10 +74,10 @@ class RoleController extends Controller
             $role->save();
             $role->permissions()->sync($request->input('permission'));
             DB::commit();
-            return redirect()->route('role.index')->with('success', 'Role updated successfully!');
+            return redirect()->route('backend.roles.index')->with('success', 'Role updated successfully!');
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Failed to update role. Please try again.');
+            return back()->with('error', 'Failed to update role. Please try again.'.$e->getMessage());
         }
     }
 
@@ -107,7 +107,7 @@ class RoleController extends Controller
         try {
             $role = Role::withTrashed()->findOrFail($id);
             $role->forceDelete();
-            return redirect()->route('role.index')->with('success', 'Role permanently deleted.');
+            return redirect()->route('backend.roles.index')->with('success', 'Role permanently deleted.');
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to permanently delete role. Please try again.');
         }

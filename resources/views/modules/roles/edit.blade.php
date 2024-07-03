@@ -243,6 +243,50 @@
                                                     </label>
                                                 </td>
                                             </tr>
+
+                                            <tr>
+                                                <td class="font-weight-semibold">Role Management</td>
+                                                <td class="text-center">
+                                                    <label
+                                                        class="custom-control custom-checkbox permission-checkbox success">
+                                                        <input type="checkbox"
+                                                            class="custom-control-input permission-checkbox"
+                                                            name="permission[]" value="17"
+                                                            {{ $role->permissions->contains('id', 17) ? 'checked' : '' }}>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center">
+                                                    <label
+                                                        class="custom-control custom-checkbox permission-checkbox success">
+                                                        <input type="checkbox"
+                                                            class="custom-control-input permission-checkbox"
+                                                            name="permission[]" value="18"
+                                                            {{ $role->permissions->contains('id', 18) ? 'checked' : '' }}>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center">
+                                                    <label
+                                                        class="custom-control custom-checkbox permission-checkbox success">
+                                                        <input type="checkbox"
+                                                            class="custom-control-input permission-checkbox"
+                                                            name="permission[]" value="19"
+                                                            {{ $role->permissions->contains('id', 19) ? 'checked' : '' }}>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
+                                                </td>
+                                                <td class="text-center">
+                                                    <label
+                                                        class="custom-control custom-checkbox permission-checkbox success">
+                                                        <input type="checkbox"
+                                                            class="custom-control-input permission-checkbox"
+                                                            name="permission[]" value="20"
+                                                            {{ $role->permissions->contains('id', 20) ? 'checked' : '' }}>
+                                                        <span class="custom-control-label"></span>
+                                                    </label>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

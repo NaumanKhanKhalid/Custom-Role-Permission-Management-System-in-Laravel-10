@@ -7,7 +7,7 @@
             <!--Page header-->
             <div class="page-header d-xl-flex d-block">
                 <div class="page-leftheader">
-                    <h4 class="page-title">{{ $user->basic_info->fullName() }} Profile</h4>
+                    <h4 class="page-title">{{ $user->fullName() }} Profile</h4>
                 </div>
                 <div class="page-rightheader">
                     <a class="btn btn-primary" href="{{ route('backend.users.index') }}">Back</a>
@@ -26,7 +26,7 @@
                                     src="../../assets/images/users/1.jpg">
                             </div>
                             <div class="pro-user mt-3">
-                                <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->basic_info->fullName() }}</h5>
+                                <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->fullName() }}</h5>
                                 <h6 class="pro-user-desc text-muted fs-12">{{ $user->role->name }}</h6>
                             </div>
 
@@ -63,53 +63,41 @@
                                                     <div class="col-md-6">
                                                         <input readonly type="text" class="form-control mb-md-0 mb-5"
                                                             placeholder="First Name" name="first_name"
-                                                            value="{{ $user->basic_info->first_name }}">
+                                                            value="{{ $user->first_name }}">
                                                         <span class="text-muted"></span>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input readonly type="text" name="last_name" class="form-control"
-                                                            placeholder="Last Name"
-                                                            value="{{ $user->basic_info->last_name }}">
+                                                            placeholder="Last Name" value="{{ $user->last_name }}">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class="form-label mb-0 mt-2">Contact Number</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <input readonly type="text" name="phone" class="form-control"
-                                                    placeholder="Phone Number" value="{{ $user->basic_info->phone }}">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group ">
+                                    {{-- <div class="form-group ">
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label class="form-label mb-0 mt-2">Date Of Birth</label>
                                             </div>
                                             <div class="col-md-9">
                                                 <input readonly type="text" name="dob" class="form-control"
-                                                    placeholder="DD-MM-YYY" value="{{ $user->basic_info->dob }}">
+                                                    placeholder="DD-MM-YYY" value="{{ $user->dob }}">
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <label class="form-label mb-0 mt-2">Address</label>
                                             </div>
                                             <div class="col-md-9">
-                                                <textarea rows="3" readonly name="address" class="form-control" placeholder="Address1">{{ $user->basic_info->address }}</textarea>
+                                                <textarea rows="3" readonly name="address" class="form-control" placeholder="Address1">{{ $user->address }}</textarea>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="form-group ">
                                         <div class="row">

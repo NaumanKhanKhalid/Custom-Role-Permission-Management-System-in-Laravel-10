@@ -139,7 +139,6 @@
                                         <th class="border-bottom-0">Name</th>
 
                                         <th class="border-bottom-0">Email</th>
-                                        <th class="border-bottom-0">Phone</th>
                                         <th class="border-bottom-0">Created At</th>
                                         <th class="border-bottom-0">Status</th>
                                         <th class="border-bottom-0">Actions</th>
@@ -153,9 +152,9 @@
                                         <td>
                                             <div class="d-flex">
                                                 <span class="avatar avatar-md brround me-3"
-                                                    style="background-image: url('{{ asset($user->basic_info->profile_picture) }}')"></span>
+                                                    style="background-image: url('{{ asset($user->profile_picture) }}')"></span>
                                                 <div class="me-3 mt-0 mt-sm-1 d-block">
-                                                    <h6 class="mb-1 fs-14">{{ $user->basic_info->fullName() }}</h6>
+                                                    <h6 class="mb-1 fs-14">{{ $user->fullName() }}</h6>
                                                 </div>
                                             </div>
                                         </td>
@@ -164,7 +163,6 @@
 
 
                                         <td><span class="badge badge-info-light">{{ $user->email }}</span></td>
-                                        <td>{{ $user->basic_info->phone }}</td>
 
                                         <td>{{ $user->created_at->format('F d, Y') }}</td>
 

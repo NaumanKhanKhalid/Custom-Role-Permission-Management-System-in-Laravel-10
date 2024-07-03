@@ -55,10 +55,10 @@ class AuthServiceProvider extends ServiceProvider
         });
         // ========== Gate for managing package_management-related permissions End ==========
 
-         // ========== Gate for managing service_management-related permissions End ==========
+        // ========== Gate for managing item_management-related permissions Start ==========
 
 
-         Gate::define('item_management', function ($user, $ability) {
+        Gate::define('item_management', function ($user, $ability) {
             $permissions = ['view_items', 'create_item', 'edit_item', 'delete_item'];
             if ($user->role) {
 
@@ -67,6 +67,19 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
         // ========== Gate for managing item_management-related permissions End ==========
+
+        // ========== Gate for managing role_management-related permissions Start ==========
+
+
+        Gate::define('role_management', function ($user, $ability) {
+            $permissions = ['view_roles', 'create_role', 'edit_role', 'delete_role'];
+            if ($user->role) {
+
+                return $user->role->permissions()->whereIn('name', $permissions)->where('name', $ability)->exists();
+            }
+            return false;
+        });
+        // ========== Gate for managing role_management-related permissions End ==========
 
     }
 }

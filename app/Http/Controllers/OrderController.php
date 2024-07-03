@@ -15,9 +15,9 @@ class OrderController extends Controller
         $user = auth()->user();
         $orders = Order::with('client', 'assignedUser', 'orderItems');
 
-        if ($user->role_id == 1) {
+        if ($user->role->name == "Admin") {
             $orders = $orders->get();
-        } elseif ($user->role_id == 2) {
+        } elseif ($user->role->name == "Vendor") {
             $orders = $orders->where('assigned_to', $user->id)->get();
         } else {
             $orders = $orders->where('user_id', $user->id)->get();
@@ -82,37 +82,35 @@ class OrderController extends Controller
     }
 
 
+    public function updateProgress(Request $request)
+    {
+        $this->validate($request, [
+            'progress_percentage.*' => 'required|integer|min:0|max:100',
+            'item_ids.*' => 'required|exists:order_items,id',
+            'order_id' => 'required|integer',
+        ]);
 
-public function updateProgress(Request $request)
-{
-    $this->validate($request, [
-        'progress_percentage.*' => 'required|integer|min:0|max:100',
-        'item_ids.*' => 'required|exists:order_items,id',
-        'order_id' => 'required|integer',
-    ]);
+        $progressPercentages = $request->progress_percentage;
+        $itemIds = $request->item_ids;
+        $orderId = $request->order_id;
 
-    $progressPercentages = $request->progress_percentage;
-    $itemIds = $request->item_ids;
-    $orderId = $request->order_id;
+        // Retrieve the order
+        $order = Order::findOrFail($orderId);
 
-    // Retrieve the order
-    $order = Order::findOrFail($orderId);
+        // Calculate total progress for the order based on item percentages
+        $totalProgress = count($progressPercentages) > 0 ? array_sum($progressPercentages) / count($progressPercentages) : 0;
 
-    // Calculate total progress for the order based on item percentages
-    $totalProgress = count($progressPercentages) > 0 ? array_sum($progressPercentages) / count($progressPercentages) : 0;
+        // Update order's progress percentage
+        $order->progress_percentage = $totalProgress;
+        $order->save();
 
-    // Update order's progress percentage
-    $order->progress_percentage = $totalProgress;
-    $order->save();
+        // Update each item's progress percentage
+        foreach ($itemIds as $index => $itemId) {
+            $item = OrderItem::findOrFail($itemId);
+            $item->progress_percentage = $progressPercentages[$index];
+            $item->save();
+        }
 
-    // Update each item's progress percentage
-    foreach ($itemIds as $index => $itemId) {
-        $item = OrderItem::findOrFail($itemId);
-        $item->progress_percentage = $progressPercentages[$index];
-        $item->save();
+        return redirect()->back()->with('success', 'Progress updated successfully.');
     }
-
-    return redirect()->back()->with('success', 'Progress updated successfully.');
-}
-
 }

@@ -103,15 +103,15 @@ Route::middleware('auth.check')->group(function () {
 
         // ========== Role Module Routes End ==========
 
-        Route::resource('role', RoleController::class)->names([
-            'index' => 'backend.role.index',
-            'create' => 'backend.role.create',
-            'store' => 'backend.role.store',
-            'show' => 'backend.role.show',
-            'edit' => 'backend.role.edit',
-            'update' => 'backend.role.update',
-            'destroy' => 'backend.role.destroy'
-        ]);
+        Route::prefix('roles')->group(function () {
+            Route::get('/', [RoleController::class, 'index'])->name('backend.roles.index')->middleware('permission.check:view_roles');
+            Route::get('create', [RoleController::class, 'create'])->name('backend.role.create')->middleware('permission.check:create_role');
+            Route::post('/', [RoleController::class, 'store'])->name('backend.role.store')->middleware('permission.check:create_role');
+            Route::get('{role}', [RoleController::class, 'show'])->name('backend.role.show')->middleware('permission.check:view_role');
+            Route::get('{role}/edit', [RoleController::class, 'edit'])->name('backend.role.edit')->middleware('permission.check:edit_role');
+            Route::put('{role}', [RoleController::class, 'update'])->name('backend.role.update')->middleware('permission.check:edit_role');
+            Route::delete('{role}', [RoleController::class, 'destroy'])->name('backend.role.destroy')->middleware('permission.check:delete_role');
+        });
 
         Route::delete('role-permanent-delete/{id}', [RoleController::class, 'rolePermanentDelete'])->name('backend.role.permanent.delete');
         Route::put('role-restore/{id}', [RoleController::class, 'restoreRole'])->name('backend.role.restore');
