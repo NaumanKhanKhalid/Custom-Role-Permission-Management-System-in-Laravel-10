@@ -23,7 +23,7 @@
                         <div class="card-body text-center">
                             <div class="widget-user-image mx-auto text-center">
                                 <img class="avatar avatar-xxl brround rounded-circle" alt="img"
-                                    src="../../assets/images/users/1.jpg">
+                                    src="{{ $user->profile_picture ? asset($user->profile_picture) : asset('dashboard-assets/assets/images/users/16.jpg') }}">
                             </div>
                             <div class="pro-user mt-3">
                                 <h5 class="pro-user-username text-dark mb-1 fs-16">{{ $user->fullName() }}</h5>

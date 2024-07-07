@@ -18,8 +18,9 @@
         <div class="app-sidebar__user">
             <div class="dropdown user-pro-body text-center">
                 <div class="user-pic">
-                    <img src="{{ asset('dashboard-assets/assets/images/users/16.jpg') }}" alt="user-img"
-                        class="avatar-xxl rounded-circle mb-1">
+                    <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : asset('dashboard-assets/assets/images/users/16.jpg') }}"
+                        alt="user-img" class="avatar-xxl rounded-circle mb-1">
+
                 </div>
                 <div class="user-info">
                     <h5 class=" mb-2">{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}
@@ -37,24 +38,24 @@
                 </a>
             </li>
 
-            @if( Gate::check('user_management', 'view_users') || Gate::check('role_management', 'view_roles'))
-            {{-- @can('user_management', 'view_users|role_management', 'view_roles') --}}
-            <li class="slide">
-                <a class="side-menu__item" data-bs-toggle="slide" href="#">
-                    <i class="feather feather-users sidemenu_icon"></i>
-                    <span class="side-menu__label">Users</span><i class="angle fa fa-angle-right"></i>
-                </a>
-                <ul class="slide-menu">
-                    @can('user_management', 'view_users')
-                        <li><a href="{{ route('backend.users.index') }}" class="slide-item">Users</a></li>
-                    @endcan
+            @if (Gate::check('user_management', 'view_users') || Gate::check('role_management', 'view_roles'))
+                {{-- @can('user_management', 'view_users|role_management', 'view_roles') --}}
+                <li class="slide">
+                    <a class="side-menu__item" data-bs-toggle="slide" href="#">
+                        <i class="feather feather-users sidemenu_icon"></i>
+                        <span class="side-menu__label">Users</span><i class="angle fa fa-angle-right"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        @can('user_management', 'view_users')
+                            <li><a href="{{ route('backend.users.index') }}" class="slide-item">Users</a></li>
+                        @endcan
 
-                    @can('role_management', 'view_roles')
-                        <li><a href="{{ route('backend.roles.index') }}" class="slide-item">Roles</a></li>
-                    @endcan
-                </ul>
-            </li>
-        @endif
+                        @can('role_management', 'view_roles')
+                            <li><a href="{{ route('backend.roles.index') }}" class="slide-item">Roles</a></li>
+                        @endcan
+                    </ul>
+                </li>
+            @endif
             @can('service_management', 'view_services')
                 <li class="slide">
                     <a class="side-menu__item" href="{{ route('backend.services.index') }}">
@@ -80,7 +81,6 @@
                     </a>
                 </li>
             @endcan
-            {{-- @can('item_management', 'view_items') --}}
 
             @if (Auth::user()->role->name == 'Admin')
                 <li class="slide">
@@ -90,22 +90,23 @@
                     </a>
                 </li>
             @endif
+            @can('order_management', 'view_orders')
+                <li class="slide">
+                    <a class="side-menu__item" href="{{ route('backend.orders.index') }}">
+                        <i class="feather feather-home sidemenu_icon"></i>
+                        <span class="side-menu__label"><span class="nav-list">Orders</span></span>
+                    </a>
+                </li>
+            @endcan
 
-            <li class="slide">
-                <a class="side-menu__item" href="{{ route('backend.orders.index') }}">
-                    <i class="feather feather-home sidemenu_icon"></i>
-                    <span class="side-menu__label"><span class="nav-list">Orders</span></span>
-                </a>
-            </li>
 
-
-            {{-- @endcan --}}
             @php
                 $hasPermissions =
                     Gate::check('user_management', 'view_users') ||
                     Gate::check('service_management', 'view_services') ||
                     Gate::check('package_management', 'view_packages') ||
                     Gate::check('item_management', 'view_items');
+                Gate::check('role_management', 'view_roles');
             @endphp
 
             @if ($hasPermissions)
@@ -116,9 +117,11 @@
                         <i class="angle fa fa-angle-right"></i>
                     </a>
                     <ul class="slide-menu">
-                        @can('user_management', 'view_users')
+                        @can('role_management', 'view_roles')
                             <li><a href="{{ route('backend.roles.index', ['trashed' => true]) }}"
                                     class="slide-item">Roles</a></li>
+                        @endcan
+                        @can('user_management', 'view_users')
                             <li><a href="{{ route('backend.users.index', ['trashed' => true]) }}"
                                     class="slide-item">Users</a></li>
                         @endcan

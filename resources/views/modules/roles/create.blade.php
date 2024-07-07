@@ -259,6 +259,45 @@
                                                 </label>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="font-weight-semibold">Order Managment</td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="21">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="22">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="23">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <label
+                                                    class="custom-control custom-checkbox permission-checkbox success">
+                                                    <input type="checkbox"
+                                                        class="custom-control-input permission-checkbox"
+                                                        name="permission[]" value="24">
+                                                    <span class="custom-control-label"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-
+@section('title', 'Packages')
 @section('content')
     <section id="custom-form">
         <div class="container mt-3">
@@ -116,13 +116,13 @@
 
                     // Add all items of this package as individual items
                     $('.item-checkbox[data-package-id="' + packageId + '"]:checked').each(
-                function() {
-                        selectedItems.push({
-                            id: $(this).data('item-id'),
-                            type: 'item',
-                            price: parseFloat($(this).val())
+                        function() {
+                            selectedItems.push({
+                                id: $(this).data('item-id'),
+                                type: 'item',
+                                price: parseFloat($(this).val())
+                            });
                         });
-                    });
                 });
 
                 $('.item-checkbox:checked').each(function() {

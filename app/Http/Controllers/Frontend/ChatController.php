@@ -19,7 +19,6 @@ class ChatController extends Controller
     }
     public function store(Request $request)
     {
-
         $request->validate([
             'message' => 'required|string|max:255',
             'guest_id' => 'required|string|max:255'
@@ -32,5 +31,16 @@ class ChatController extends Controller
         $message->save();
 
         return response()->json(['message' => 'Message sent successfully'], 200);
+    }
+
+    public function markRead(Request $request)
+    {
+        $guestId = $request->guest_id;
+
+        ChatMessage::where('guest_id', $guestId)
+            ->where('message_type', 'received')
+            ->update(['read' => true]);
+
+        return response()->json(['message' => 'Messages marked as read'], 200);
     }
 }

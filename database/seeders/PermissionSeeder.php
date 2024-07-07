@@ -30,6 +30,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'view_roles'],
             ['name' => 'edit_role'],
             ['name' => 'delete_role'],
+            ['name' => 'create_order'],
+            ['name' => 'view_orders'],
+            ['name' => 'edit_order'],
+            ['name' => 'delete_order'],
         ];
 
         Permission::insert($permissions);

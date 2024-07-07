@@ -58,6 +58,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/ratings.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/rating-themes.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/scss/bootstrap/_progress.scss') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/css/util/_avatars.scss') }}">
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Icon Picker CSS -->
@@ -66,35 +67,35 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script>
-<style>
-    .noUi-target {
-    background: #FAFAFA;
-    border-radius: 4px;
-    border: 1px solid #D3D3D3;
-    box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
-    width: 90%;
-    top: 36px !important;
-}
+    <style>
+        .noUi-target {
+            background: #FAFAFA;
+            border-radius: 4px;
+            border: 1px solid #D3D3D3;
+            box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+            width: 90%;
+            top: 36px !important;
+        }
 
-.noUi-horizontal {
-    height: 13px;
-}
+        .noUi-horizontal {
+            height: 13px;
+        }
 
-.noUi-horizontal .noUi-handle {
-    width: 19px;
-    height: 20px;
-    right: -17px;
-    top: -6px;
-}
+        .noUi-horizontal .noUi-handle {
+            width: 19px;
+            height: 20px;
+            right: -17px;
+            top: -6px;
+        }
 
-.noUi-handle {
-    border: 1px solid #D9D9D9;
-    border-radius: 60px;
-    background: #FFF;
-    cursor: default;
-    box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
-}
-</style>
+        .noUi-handle {
+            border: 1px solid #D9D9D9;
+            border-radius: 60px;
+            background: #FFF;
+            cursor: default;
+            box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+        }
+    </style>
     @stack('styles')
 
 </head>
@@ -422,61 +423,60 @@
         </div>
         <!--/sidebar-right-->
 
-        <!--Clock-IN Modal -->
-        <div class="modal fade" id="clockinmodal">
-            <div class="modal-dialog" role="document">
+        <!-- User Profile Update Modal -->
+        <div class="modal fade" id="updateProfileModal">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"><span class="feather feather-clock  me-1"></span>Clock In</h5>
+                        <h5 class="modal-title">Update Profile</h5>
                         <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="countdowntimer"><span id="clocktimer" class="border-0"></span></div>
-                        <div class="form-group">
-                            <label class="form-label">Note:</label>
-                            <textarea class="form-control" rows="3">Some text here...</textarea>
-                        </div>
+                        <form id="updateProfileForm" action="{{ route('user.profile.update') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="first_name" class="form-control"
+                                    placeholder="First Name" value="{{ Auth::user()->first_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Last Name"
+                                    value="{{ Auth::user()->last_name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="Email"
+                                    value="{{ Auth::user()->email }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Profile Picture</label>
+                                <input type="file" name="profile_picture" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <input type="password" name="password" class="form-control"
+                                    placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <input type="password" name="password_confirmation" class="form-control"
+                                    placeholder="Confirm New Password">
+                            </div>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-primary">Clock In</button>
+                        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" form="updateProfileForm">Update</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End Clock-IN Modal  -->
-
-        <!--Change password Modal -->
-        <div class="modal fade" id="changepasswordnmodal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Change Password</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label class="form-label">New Password</label>
-                            <input type="password" class="form-control" placeholder="password" value="">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" placeholder="password" value="">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</a>
-                        <a href="#" class="btn btn-primary">Confirm</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Change password Modal  -->
-
+        <!-- End User Profile Update Modal -->
     </div>
 
     <!-- Back to top -->
@@ -566,12 +566,10 @@
 
     <script src="{{ asset('dashboard-assets/assets/plugins/rating/js/jquery.barrating.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/3.2.0/js/fontawesome-iconpicker.min.js">
-
-
     </script>
 
-{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet"> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script> --}}
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.css" rel="stylesheet"> --}}
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.3/nouislider.min.js"></script> --}}
 
     @if ($errors->any())
         @foreach ($errors->all() as $index => $error)

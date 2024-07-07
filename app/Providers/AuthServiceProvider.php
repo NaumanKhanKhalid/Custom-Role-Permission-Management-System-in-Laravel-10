@@ -81,5 +81,19 @@ class AuthServiceProvider extends ServiceProvider
         });
         // ========== Gate for managing role_management-related permissions End ==========
 
+
+        // ========== Gate for managing role_management-related permissions Start ==========
+
+
+        Gate::define('order_management', function ($user, $ability) {
+            $permissions = ['view_orders', 'create_order', 'edit_order', 'delete_order'];
+            if ($user->role) {
+
+                return $user->role->permissions()->whereIn('name', $permissions)->where('name', $ability)->exists();
+            }
+            return false;
+        });
+        // ========== Gate for managing role_management-related permissions End ==========
+
     }
 }

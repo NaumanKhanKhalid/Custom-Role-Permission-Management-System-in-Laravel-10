@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>BrixtonCMM</title>
+    <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('frontend-assets/images/apple-touch-icon.png') }}">

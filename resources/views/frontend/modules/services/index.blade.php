@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title', 'Services')
 @section('content')
     <!-- Cards Section Start -->
     <section>

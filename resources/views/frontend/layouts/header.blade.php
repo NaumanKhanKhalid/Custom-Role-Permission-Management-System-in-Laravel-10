@@ -3,8 +3,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 logo-area d-flex flex-wrap justify-content-between align-items-center">
-                    <div class="logo"><a href="index.php"><img class="img-fluid"
-                                src="{{ asset('frontend-assets/images/logo.png') }}" alt="*" /></a>
+                    <div class="logo"><a href="index.php">
+                        {{-- <img class="img-fluid"
+                                src="{{ asset('frontend-assets/images/logo.png') }}" alt="*" />
+                                 --}}
+                                 <h2>FYP</h2>
+                            </a>
                     </div>
                     <div>
                         @if (Auth::check())

@@ -16,9 +16,9 @@ class RoleSeeder extends Seeder
         $adminRole->permissions()->attach($permissions);
 
         $vendorRole = Role::create(['name' => 'Vendor']);
-        $vendorRole->permissions()->attach($permissions->whereIn('name', ['view_users', 'create_user']));
-        
+        $vendorRole->permissions()->attach($permissions->whereIn('name', ['view_orders']));
+
         $clientRole = Role::create(['name' => 'Client']);
-        $clientRole->permissions()->attach($permissions->whereIn('name', ['view_users']));
+        $clientRole->permissions()->attach($permissions->whereIn('name', ['view_orders']));
     }
 }

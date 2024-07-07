@@ -9,13 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id();
-            $table->string('guest_id')->nullable();
+            $table->string('guest_id');
             $table->text('message');
-            $table->enum('message_type', ['sent', 'received'])->default('sent');
+            $table->string('message_type');
+            $table->boolean('read')->default(false); // Add this line
+
             $table->timestamps();
         });
     }

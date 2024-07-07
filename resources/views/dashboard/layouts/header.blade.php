@@ -49,8 +49,8 @@
                             <div class="dropdown profile-dropdown">
                                 <a href="#" class="nav-link pe-1 ps-0 leading-none" data-bs-toggle="dropdown">
                                     <span>
-                                        <img src="{{ asset('dashboard-assets/assets/images/users/16.jpg') }}"
-                                            alt="img" class="avatar avatar-md bradius">
+                                        <img src="{{ Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : asset('dashboard-assets/assets/images/users/16.jpg') }}" alt="img" class="avatar avatar-md bradius">
+
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow animated">
@@ -60,10 +60,9 @@
                                         </a>
                                         <p class="text-center user-semi-title">{{ Auth::user()->role->name }}</p>
                                     </div>
-                                    <a class="dropdown-item d-flex" href="profile-1.html">
-                                        <i class="feather feather-user me-3 fs-16 my-auto"></i>
-                                        <div class="mt-1">Profile</div>
-                                    </a>
+
+                                    <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#updateProfileModal"><i class="feather feather-user me-3 fs-16 my-auto"></i>
+                                        <div class="mt-1">Profile</div></a>
 
                                     <a class="dropdown-item d-flex" href="{{ route('logout') }}">
                                         <i class="feather feather-power me-3 fs-16 my-auto"></i>

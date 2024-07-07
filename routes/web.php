@@ -2,18 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
+use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
-use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
-use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return redirect()->route('services.index');
@@ -131,12 +132,10 @@ Route::middleware('auth.check')->group(function () {
             Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
             Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
             Route::post('/update-progress', [OrderController::class, 'updateProgress'])->name('orders.updateProgress');
-
-
         });
         // ========== Orders Module Routes End ==========
 
-
+        Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
     });
 
     Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
@@ -155,13 +154,18 @@ Route::prefix('packages')->group(function () {
 
 // Guest chat routes
 Route::prefix('chats')->group(function () {
-    Route::get('/', [ChatController::class, 'index'])->name('chat.index');
-    Route::post('create', [ChatController::class, 'store'])->name('chat.store');
+    Route::get('/', [FrontendChatController::class, 'index'])->name('chat.index');
+    Route::post('create', [FrontendChatController::class, 'store'])->name('chat.store');
+    Route::post('mark-read', [FrontendChatController::class, 'markRead'])->name('chat.markRead');
 });
 
 // Admin chat routes
-Route::get('admin/chat', [ChatController::class, 'adminIndex'])->name('backend.chat.index');
-Route::post('admin/chat', [ChatController::class, 'adminStore'])->name('backend.chat.store');
+// routes/web.php
+Route::get('/admin/chat/list', [ChatController::class, 'listGuests'])->name('admin.chat.list');
+Route::get('/admin/chat/index', [ChatController::class, 'index'])->name('backend.chat.index');
+Route::get('/admin/chat/messages', [ChatController::class, 'getMessagesForAdmin'])->name('admin.chat.messages');
+Route::post('/admin/chat/store', [ChatController::class, 'storeMessageFromAdmin'])->name('admin.chat.store');
+
 
 
 // ========== Frontend  Routes End ==========

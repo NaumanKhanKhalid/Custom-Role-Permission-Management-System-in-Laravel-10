@@ -11,12 +11,12 @@
             </div>
             <div class="page-rightheader ms-md-auto">
                 <div class="d-flex align-items-end flex-wrap my-auto end-content breadcrumb-end">
-                    <div class="btn-list">
+                    {{-- <div class="btn-list">
                         <a href="{{ route('backend.role.create') }}" class="btn btn-primary"><i
                                 class="feather feather-plus fs-15 my-auto me-2"></i>Create
                             New Role</a>
 
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

@@ -68,15 +68,8 @@ class UserController extends Controller
                 'password' => bcrypt($request->input('password')),
                 'role_id' => $request->input('role_id'),
                 'status' => $request->input('status'),
-            ]);
-
-            $userBasicInformation = UserBasicInformation::create([
-                'user_id' => $user->id,
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
-                'dob' => $request->input('dob'),
-                'address' => $request->input('address'),
-                'phone' => $request->input('phone'),
                 'profile_picture' => $profilePicturePath,
             ]);
 
@@ -186,5 +179,4 @@ class UserController extends Controller
         $user->restore();
         return redirect()->back()->with('success', 'User restored successfully.');
     }
-
 }

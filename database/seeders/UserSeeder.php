@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             [
                 'first_name' => 'Noman',
                 'last_name' => 'Khan',
-                'profile_picture' => "avatar.jpg",
+                'profile_picture' => "",
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             ],[
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-                'profile_picture' => "avatar.jpg",
+                'profile_picture' => "",
                 'email' => 'vendor@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
             [
                 'first_name' => 'Mick',
                 'last_name' => 'blue',
-                'profile_picture' => "avatar.jpg",
+                'profile_picture' => "",
                 'email' => 'client@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',

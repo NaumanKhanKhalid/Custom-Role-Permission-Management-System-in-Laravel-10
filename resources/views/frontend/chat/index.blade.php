@@ -106,6 +106,21 @@
         background-color: #0056b3;
     }
 
+    .chat-button .unread-indicator {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     @media (max-width: 600px) {
         .chat-container {
             width: 100%;
@@ -117,8 +132,9 @@
     }
 </style>
 
-<button class="chat-button" onclick="toggleChat()">Chat with us</button>
-
+<button class="chat-button" onclick="toggleChat()">Chat with us <div class="unread-indicator" id="unreadIndicator"
+        style="display: none;">0</div>
+</button>
 <div id="chatContainer" class="chat-container">
     <div class="chat-header">
         Chat with Support
@@ -132,46 +148,47 @@
         <input type="text" id="chatMessage" placeholder="Type your message...">
         <button onclick="sendMessage()">Send</button>
     </div>
+
+
+
 </div>
 
 @push('scripts')
     <script>
-        // Function to generate a unique guest identifier (timestamp-based)
         function generateGuestId() {
-            return new Date().getTime();
+            return new Date().getTime().toString();
         }
 
-        // Function to store guest identifier in local storage
         function storeGuestId(guestId) {
             localStorage.setItem('guestId', guestId);
         }
 
-        // Function to retrieve guest identifier from local storage
         function getGuestId() {
             return localStorage.getItem('guestId');
         }
 
-        // Function to check if guest identifier exists in local storage
         function hasGuestId() {
             return localStorage.getItem('guestId') !== null;
         }
 
-        // Function to toggle chat visibility
         function toggleChat() {
             var chatContainer = $('#chatContainer');
             chatContainer.slideToggle(function() {
                 if (chatContainer.is(':visible')) {
-                    fetchMessages(); // Fetch messages when chat is opened
+
+                    fetchMessages();
+                    clearUnreadIndicator();
+                    markMessagesAsRead();
                 }
             });
         }
 
-        // Function to fetch messages from the server
+
         function fetchMessages() {
             var guestId = getGuestId();
 
             $.ajax({
-                url: '{{ route('chat.index') }}', // Replace with your Laravel route for fetching messages
+                url: '{{ route('chat.index') }}',
                 type: 'GET',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -179,9 +196,8 @@
                 },
                 success: function(response) {
                     var messages = response.messages;
-                    console.log(messages);
                     var chatBody = $('#chatBody');
-                    chatBody.empty(); // Clear existing messages
+                    chatBody.empty();
                     messages.forEach(function(message) {
                         var messageClass = message.message_type === 'sent' ? 'sender-message' :
                             'receiver-message';
@@ -189,7 +205,11 @@
                             .message + '</div>';
                         chatBody.append(newMessage);
                     });
-                    scrollToBottom(chatBody); // Scroll to bottom
+                    scrollToBottom(chatBody);
+
+                    if ($('#chatContainer').is(':visible')) {
+                        markMessagesAsRead();
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching messages:', error);
@@ -197,13 +217,12 @@
             });
         }
 
-        // Function to scroll to the bottom of chat body
         function scrollToBottom(element) {
             element.scrollTop(element[0].scrollHeight);
         }
 
-        // Function to send a message to the server
         function sendMessage() {
+
             var messageInput = $('#chatMessage');
             var message = messageInput.val().trim();
 
@@ -223,12 +242,13 @@
                         message: message
                     },
                     success: function(response) {
+                        messageInput.val('');
                         var chatBody = $('#chatBody');
-                        var messageClass = 'sender-message'; // Assuming sender is always the current user
+                        var messageClass = 'sender-message';
                         var newMessage = '<div class="message ' + messageClass + '">' + message + '</div>';
                         chatBody.append(newMessage);
-                        messageInput.val(''); // Clear input field
-                        scrollToBottom(chatBody); // Scroll to bottom
+                        messageInput.val('');
+                        scrollToBottom(chatBody);
                     },
                     error: function(xhr, status, error) {
                         console.error('Error sending message:', error);
@@ -237,11 +257,79 @@
             }
         }
 
+        function checkForNewMessages() {
+
+            var guestId = getGuestId();
+            $.ajax({
+                url: '{{ route('chat.index') }}',
+                type: 'GET',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    guest_id: guestId
+                },
+                success: function(response) {
+                    var messages = response.messages;
+                    var unreadCount = 0;
+                    messages.forEach(function(message) {
+                        if (message.message_type === 'received' && !message.read) {
+                            unreadCount++;
+                        }
+                    });
+                    updateUnreadIndicator(unreadCount);
+
+                    if ($('#chatContainer').is(':visible')) {
+                        markMessagesAsRead();
+                        fetchMessages();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error checking for new messages:', error);
+                }
+            });
+        }
+
+        function updateUnreadIndicator(count) {
+
+            console.log(count);
+            var unreadIndicator = $('#unreadIndicator');
+            if (count > 0 && !$('#chatContainer').is(':visible')) {
+                unreadIndicator.text(count);
+                unreadIndicator.show();
+            } else {
+                unreadIndicator.hide();
+            }
+        }
+
+        function clearUnreadIndicator() {
+            $('#unreadIndicator').hide();
+        }
+
+        function markMessagesAsRead() {
+            var guestId = getGuestId();
+
+            $.ajax({
+                url: '{{ route('chat.markRead') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    guest_id: guestId
+                },
+                success: function(response) {
+                    console.log('Messages marked as read');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error marking messages as read:', error);
+                }
+            });
+        }
+
         $(document).ready(function() {
             if (!hasGuestId()) {
                 var guestId = generateGuestId();
                 storeGuestId(guestId);
             }
+
+            setInterval(checkForNewMessages, 1000);
         });
     </script>
 @endpush

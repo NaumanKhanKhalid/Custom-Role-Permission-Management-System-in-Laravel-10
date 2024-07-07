@@ -130,6 +130,56 @@
                                                 class="{{ $roles->permissions->contains('id','16') ? $yesClass : $noClass }}"></span>
                                         </td>
                                     </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="font-weight-semibold">Role Managment</td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','17') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','18') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','19') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','20') ? $yesClass : $noClass }}"></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td class="font-weight-semibold">Order Managment</td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','21') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','22') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','23') ? $yesClass : $noClass }}"></span>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <span
+                                                class="{{ $roles->permissions->contains('id','24') ? $yesClass : $noClass }}"></span>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
