@@ -6,6 +6,7 @@
     <!-- Meta data -->
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Title -->
     <title>@yield('title')</title>
     <!--Favicon -->
@@ -57,8 +58,6 @@
     <!-- INTERNAL Ratings css -->
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/ratings.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/plugins/rating/css/rating-themes.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/scss/bootstrap/_progress.scss') }}">
-    <link rel="stylesheet" href="{{ asset('dashboard-assets/assets/css/util/_avatars.scss') }}">
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Icon Picker CSS -->

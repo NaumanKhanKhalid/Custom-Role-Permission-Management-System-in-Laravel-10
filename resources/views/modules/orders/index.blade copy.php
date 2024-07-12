@@ -53,7 +53,6 @@
                                                     'Rejected' => 'badge-danger',
                                                     'Cancelled' => 'badge-secondary',
                                                     'Awaiting Payment' => 'badge-warning',
-                                                    'Completed' => 'badge-success',
                                                 ];
 
                                                 $statusActions = [
@@ -111,19 +110,24 @@
                                                         @if ($order->status == 'Awaiting Payment')
                                                             <a class="action-btns1 bg-white upload-payment-proof"
                                                                 href="javascript:void(0)"
-                                                                data-order-id="{{ $order->id }}"
+                                                                data-order-id="{{ $order->id }}" data-bs-toggle="modal"
+                                                                data-bs-target="#paymentProofModal"
                                                                 title="Add Payment Proof">
                                                                 <i class="feather feather-upload"></i>
                                                             </a>
                                                         @endif
-                                                        @if (!empty($order->paymentProofs))
-                                                            <a class="action-btns1 bg-white view-payment-proof"
-                                                                href="javascript:void(0)"
-                                                                data-order-id="{{ $order->id }}"
-                                                                title="View Payment Proof">
-                                                                <i class="feather feather-file-text"></i>
-                                                            </a>
-                                                        @endif
+
+                                                        <a class="action-btns1 bg-white upload-payment-proof"
+                                                            href="javascript:void(0)" data-order-id="{{ $order->id }}"
+                                                           
+                                                            title="Add Payment Proof">
+                                                            <i class="feather feather-upload"></i>
+                                                        </a>
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#proofModal{{ $order->id }}">
+                                                            View Payment Proofs
+                                                        </button>
 
                                                         @if (in_array(Auth::user()->role->name, ['Admin', 'Vendor']))
                                                             <a href="javascript:void(0)"
@@ -175,12 +179,88 @@
                                                         @endif
                                                     </div>
                                                 </td>
+
+
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
 
+                                <!-- Assign Vendor Modal Start -->
+                                <div class="modal fade" id="AssignVendorModal" tabindex="-1"
+                                    aria-labelledby="AssignVendorModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <form action="{{ route('orders.assign') }}" method="POST">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="assignVendorModalLabel">Assign Vendor</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Select a vendor to assign to this order.</p>
+                                                    <select name="vendor_id" class="form-control">
+                                                        @foreach ($vendors as $vendor)
+                                                            <option value="{{ $vendor->id }}">
+                                                                {{ $vendor->first_name . ' ' . $vendor->last_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <input type="hidden" name="order_id" class="assign_order_id">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Assign To
+                                                        Vendor</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- Assign Vendor Modal End -->
+                                <!-- Payment Proof Modal Start -->
+                                <div class="modal fade" id="paymentProofModal" tabindex="-1"
+                                    aria-labelledby="paymentProofModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form id="paymentProofForm" action="{{ route('payment.proof.submit') }}"
+                                                method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="paymentProofModalLabel">Submit Payment
+                                                        Proof</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="transaction_id" class="form-label">Transaction
+                                                            ID</label>
+                                                        <input type="text" class="form-control" id="transaction_id"
+                                                            name="transaction_id" required>
+                                                    </div>
 
+                                                    <div class="mb-3">
+                                                        <label for="payment_proof" class="form-label">Payment
+                                                            Proof</label>
+                                                        <input type="file" class="form-control" id="payment_proof"
+                                                            name="payment_proof" required>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="order_id" class="order_id">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Payment Proof Modal End -->
                             </div>
                         </div>
                     </div>
@@ -189,110 +269,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="view-payment-proof" tabindex="-1" aria-labelledby="proofModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Payment Proofs for Order ID: <span id="order-id-label"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Transaction ID</th>
-                                <th>Amount</th>
-                                <th>Proof Image</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="payment-proofs-body">
-                            <!-- Proof details will be dynamically added here -->
-                        </tbody>
-                    </table>
-                    <p id="no-proofs-message" class="text-center">No payment proofs uploaded for this order.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Assign Vendor Modal Start -->
-    <div class="modal fade" id="AssignVendorModal" tabindex="-1" aria-labelledby="AssignVendorModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <form action="{{ route('orders.assign') }}" method="POST">
-                @csrf
-                @method('PATCH')
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="assignVendorModalLabel">Assign Vendor</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Select a vendor to assign to this order.</p>
-                        <select name="vendor_id" class="form-control">
-                            @foreach ($vendors as $vendor)
-                                <option value="{{ $vendor->id }}">
-                                    {{ $vendor->first_name . ' ' . $vendor->last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <input type="hidden" name="order_id" class="assign_order_id">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Assign To
-                            Vendor</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Assign Vendor Modal End -->
-    <!-- Payment Proof Modal Start -->
-    <div class="modal fade" id="paymentProofModal" tabindex="-1" aria-labelledby="viewpaymentProofModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form id="paymentProofForm" action="{{ route('payment.proof.submit') }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="viewpaymentProofModalLabel">Submit Payment
-                            Proof</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="transaction_id" class="form-label">Transaction
-                                ID</label>
-                            <input type="text" class="form-control" id="transaction_id" name="transaction_id"
-                                required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="amount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="amount" name="amount" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="payment_proof" class="form-label">Payment
-                                Proof</label>
-                            <input type="file" class="form-control" id="payment_proof" name="payment_proof" required>
-                        </div>
-                    </div>
-                    <input type="hidden" name="order_id" class="order_id">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Payment Proof Modal End -->
     <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -347,7 +323,6 @@
             </form>
         </div>
     </div>
-
     @push('scripts')
         <script>
             $(document).ready(function() {
@@ -433,64 +408,39 @@
                         }
                     });
                 });
+
+
                 $('.upload-payment-proof').click(function(e) {
                     e.preventDefault();
                     var orderId = $(this).data('order-id');
                     $('.order_id').val(orderId);
                     $('#paymentProofModal').modal('show');
                 });
+
+
                 $('.assign-vendor-btn').click(function(e) {
                     e.preventDefault();
                     var orderId = $(this).data('order-id');
                     $('.assign_order_id').val(orderId);
                     $('#AssignVendorModal').modal('show');
                 });
+                $('.assign-vendor-btn').click(function(e) {
+                    e.preventDefault();
+                    var orderId = $(this).data('order-id');
+                    $('.assign_order_id').val(orderId);
+                    $.ajax({
+                        url: "{{ route('orders.show', '') }}" + "/" + orderId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
 
-                $('.view-payment-proof').click(function(e) {
-    e.preventDefault();
-    var orderId = $(this).data('order-id');
-
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-    $.ajax({
-        url: "{{ route('view-payment-proofs') }}",
-        type: 'POST',
-        data: {
-            order_id: orderId
-        },
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            $('#payment-proofs-body').empty(); // Clear previous entries
-
-            if (response.paymentProofs.length > 0) {
-                $('#no-proofs-message').hide(); // Hide message if proofs exist
-
-                $.each(response.paymentProofs, function(index, proof) {
-                    var row = '<tr>' +
-                        '<td>' + proof.transaction_id + '</td>' +
-                        '<td>' + proof.amount + '</td>' +
-                        '<td><a class="btn btn-primary" href="' + '{{ asset('payment_proofs/') }}/' + proof.payment_proof + '" target="_blank">View Proof</a></td>' +
-                        '</tr>';
-
-                    $('#payment-proofs-body').append(row);
+                        },
+                        error: function() {
+                            alert('Error fetching order details');
+                        }
+                    });
                 });
-            } else {
-                $('#no-proofs-message').show(); // Show message if no proofs exist
-            }
 
-            $('#order-id-label').text(orderId); // Set the order ID in the modal title
-            $('#view-payment-proof').modal('show'); // Show the modal
-        },
-        error: function() {
-            flasher.error('Error fetching payment proof details.');
-        }
-    });
-});
 
 
                 $('.update-item-progress-btn').click(function() {

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\OrderItem; // Ensure this line is included
 use App\Models\User;
+use App\Models\Payment;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\OrderItem; // Ensure this line is included
 
 class Order extends Model
 {
@@ -26,5 +27,9 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+    public function paymentProofs()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

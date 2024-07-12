@@ -13,8 +13,7 @@ class OrderController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $orders = Order::with('client', 'assignedUser', 'orderItems');
-
+        $orders = Order::with('client', 'assignedUser', 'orderItems', 'paymentProofs');
         if ($user->role->name == "Admin") {
             $orders = $orders->get();
         } elseif ($user->role->name == "Vendor") {
@@ -23,6 +22,7 @@ class OrderController extends Controller
             $orders = $orders->where('user_id', $user->id)->get();
         }
 
+        // dd($orders);
         $vendors = User::where('role_id', '2')->where('status', "Active")->get();
         return view('modules.orders.index', compact('orders', 'vendors'));
     }
@@ -56,9 +56,8 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:Pending,Approved,Assigned,In Progress,Rejected,Cancelled'
+            'status' => 'required|in:Pending,Approved,Assigned,In Progress,Rejected,Cancelled,Awaiting Payment,Completed'
         ]);
-
         $order->update([
             'status' => $request->status
         ]);

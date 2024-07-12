@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
 use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return redirect()->route('services.index');
@@ -134,6 +135,11 @@ Route::middleware('auth.check')->group(function () {
             Route::post('/update-progress', [OrderController::class, 'updateProgress'])->name('orders.updateProgress');
         });
         // ========== Orders Module Routes End ==========
+
+        Route::post('payment-proof-submit', [PaymentController::class, 'uploadProof'])->name('payment.proof.submit');
+        Route::post('view-payment-proofs', [PaymentController::class, 'viewUploadedProofs'])->name('view-payment-proofs');
+
+
 
         Route::put('/profile/update', [UserProfileController::class, 'update'])->name('user.profile.update');
     });
