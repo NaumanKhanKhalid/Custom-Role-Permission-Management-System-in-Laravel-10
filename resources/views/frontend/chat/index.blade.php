@@ -290,7 +290,7 @@
 
         function updateUnreadIndicator(count) {
 
-            console.log(count);
+           
             var unreadIndicator = $('#unreadIndicator');
             if (count > 0 && !$('#chatContainer').is(':visible')) {
                 unreadIndicator.text(count);

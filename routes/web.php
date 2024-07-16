@@ -2,11 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
@@ -15,7 +13,10 @@ use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
 use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
+use App\Http\Controllers\BackendOrderController;
+use App\Http\Controllers\BackendChatController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return redirect()->route('services.index');
@@ -127,12 +128,12 @@ Route::middleware('auth.check')->group(function () {
         // ========== Orders Module Routes End ==========
 
         Route::prefix('orders')->group(function () {
-            Route::get('/', [OrderController::class, 'index'])->name('backend.orders.index');
-            Route::get('/{orderId}', [OrderController::class, 'show'])->name('orders.show');
-            Route::patch('/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
-            Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
-            Route::patch('/assign', [OrderController::class, 'assignVendor'])->name('orders.assign');
-            Route::post('/update-progress', [OrderController::class, 'updateProgress'])->name('orders.updateProgress');
+            Route::get('/', [BackendOrderController::class, 'index'])->name('backend.orders.index');
+            Route::get('/{orderId}', [BackendOrderController::class, 'show'])->name('orders.show');
+            Route::patch('/{order}/status', [BackendOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+            Route::patch('/assign', [BackendOrderController::class, 'assignVendor'])->name('orders.assign');
+            Route::patch('/assign', [BackendOrderController::class, 'assignVendor'])->name('orders.assign');
+            Route::post('/update-progress', [BackendOrderController::class, 'updateProgress'])->name('orders.updateProgress');
         });
         // ========== Orders Module Routes End ==========
 
@@ -152,6 +153,9 @@ Route::middleware('auth.check')->group(function () {
 Route::prefix('services')->group(function () {
     Route::get('/', [FrontendServiceController::class, 'index'])->name('services.index');
 });
+Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+
 
 Route::prefix('packages')->group(function () {
     Route::get('/{service}', [FrontendPackageController::class, 'index'])->name('packages.index');
@@ -167,10 +171,10 @@ Route::prefix('chats')->group(function () {
 
 // Admin chat routes
 // routes/web.php
-Route::get('/admin/chat/list', [ChatController::class, 'listGuests'])->name('admin.chat.list');
-Route::get('/admin/chat/index', [ChatController::class, 'index'])->name('backend.chat.index');
-Route::get('/admin/chat/messages', [ChatController::class, 'getMessagesForAdmin'])->name('admin.chat.messages');
-Route::post('/admin/chat/store', [ChatController::class, 'storeMessageFromAdmin'])->name('admin.chat.store');
+Route::get('/admin/chat/list', [BackendChatController::class, 'listGuests'])->name('admin.chat.list');
+Route::get('/admin/chat/index', [BackendChatController::class, 'index'])->name('backend.chat.index');
+Route::get('/admin/chat/messages', [BackendChatController::class, 'getMessagesForAdmin'])->name('admin.chat.messages');
+Route::post('/admin/chat/store', [BackendChatController::class, 'storeMessageFromAdmin'])->name('admin.chat.store');
 
 
 

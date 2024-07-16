@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
-class ChatController extends Controller
+class BackendChatController extends Controller
 {
 
     public function index()
