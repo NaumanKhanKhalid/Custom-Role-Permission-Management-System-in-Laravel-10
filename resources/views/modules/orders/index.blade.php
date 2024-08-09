@@ -71,9 +71,6 @@
                                                 <td>{{ $order->id }}</td>
                                                 <td>{{ $order->client->first_name . ' ' . $order->client->last_name }}</td>
                                                 <td>{{ $order->total_price }}</td>
-
-
-
                                                 <td>
                                                     <span
                                                         class="badge {{ $statusColors[$order->status] ?? 'badge-light' }}">
@@ -109,20 +106,22 @@
                                                         </a>
 
                                                         @if ($order->status == 'Awaiting Payment')
-                                                            <a class="action-btns1 bg-white upload-payment-proof"
+                                                            <a class="action-btns1 bg-white payment-option-modal"
                                                                 href="javascript:void(0)"
                                                                 data-order-id="{{ $order->id }}"
                                                                 title="Add Payment Proof">
                                                                 <i class="feather feather-upload"></i>
                                                             </a>
                                                         @endif
-                                                        @if (!empty($order->paymentProofs))
-                                                            <a class="action-btns1 bg-white view-payment-proof"
-                                                                href="javascript:void(0)"
-                                                                data-order-id="{{ $order->id }}"
-                                                                title="View Payment Proof">
-                                                                <i class="feather feather-file-text"></i>
-                                                            </a>
+                                                        @if (in_array($order->status, ['Completed', 'Awaiting Payment']))
+                                                            @if (!empty($order->paymentProofs))
+                                                                <a class="action-btns1 bg-white view-payment-proof"
+                                                                    href="javascript:void(0)"
+                                                                    data-order-id="{{ $order->id }}"
+                                                                    title="View Payment Proof">
+                                                                    <i class="feather feather-file-text"></i>
+                                                                </a>
+                                                            @endif
                                                         @endif
 
                                                         @if (in_array(Auth::user()->role->name, ['Admin', 'Vendor']))
@@ -133,45 +132,47 @@
                                                                 title="Update Progress">
                                                                 <i class="feather feather-edit-2 text-primary"></i>
                                                             </a>
-
-                                                            <div class="dropdown ms-2">
-                                                                <button
-                                                                    class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                                                    type="button"
-                                                                    id="dropdownMenuButton{{ $order->id }}"
-                                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    Change Status
-                                                                </button>
-                                                                <ul class="dropdown-menu"
-                                                                    aria-labelledby="dropdownMenuButton{{ $order->id }}">
-                                                                    @foreach ($statusActions[$order->status] as $action)
-                                                                        @if (Auth::user()->role->name == 'Admin' && $action === 'Assigned')
-                                                                            <li>
-                                                                                <button type="button"
-                                                                                    class="dropdown-item assign-vendor-btn"
-                                                                                    data-order-id="{{ $order->id }}"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#assignVendorModal">
-                                                                                    {{ $action }}
-                                                                                </button>
-                                                                            </li>
-                                                                        @else
-                                                                            <li>
-                                                                                <form
-                                                                                    action="{{ route('orders.updateStatus', $order->id) }}"
-                                                                                    method="POST" style="display:inline;">
-                                                                                    @csrf
-                                                                                    @method('PATCH')
-                                                                                    <input type="hidden" name="status"
-                                                                                        value="{{ $action }}">
-                                                                                    <button type="submit"
-                                                                                        class="dropdown-item">{{ $action }}</button>
-                                                                                </form>
-                                                                            </li>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </ul>
-                                                            </div>
+                                                            @if (!in_array($order->status, ['Completed', 'Cancelled']))
+                                                                <div class="dropdown ms-2">
+                                                                    <button
+                                                                        class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                                                        type="button"
+                                                                        id="dropdownMenuButton{{ $order->id }}"
+                                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        Change Status
+                                                                    </button>
+                                                                    <ul class="dropdown-menu"
+                                                                        aria-labelledby="dropdownMenuButton{{ $order->id }}">
+                                                                        @foreach ($statusActions[$order->status] as $action)
+                                                                            @if (Auth::user()->role->name == 'Admin' && $action === 'Assigned')
+                                                                                <li>
+                                                                                    <button type="button"
+                                                                                        class="dropdown-item assign-vendor-btn"
+                                                                                        data-order-id="{{ $order->id }}"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#assignVendorModal">
+                                                                                        {{ $action }}
+                                                                                    </button>
+                                                                                </li>
+                                                                            @else
+                                                                                <li>
+                                                                                    <form
+                                                                                        action="{{ route('orders.updateStatus', $order->id) }}"
+                                                                                        method="POST"
+                                                                                        style="display:inline;">
+                                                                                        @csrf
+                                                                                        @method('PATCH')
+                                                                                        <input type="hidden" name="status"
+                                                                                            value="{{ $action }}">
+                                                                                        <button type="submit"
+                                                                                            class="dropdown-item">{{ $action }}</button>
+                                                                                    </form>
+                                                                                </li>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 </td>
@@ -183,6 +184,24 @@
 
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="paymentOptionModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Choose Payment Method {{ env('STRIPE_KEY') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-secondary" id="uploadProofButton">Upload Payment Proof</button>
+                        <button class="btn btn-primary" id="stripeButton">Pay with Stripe</button>
                     </div>
                 </div>
             </div>
@@ -202,8 +221,8 @@
                             <tr>
                                 <th>Transaction ID</th>
                                 <th>Amount</th>
+                                <th>Payment Type</th>
                                 <th>Proof Image</th>
-
                             </tr>
                         </thead>
                         <tbody id="payment-proofs-body">
@@ -292,6 +311,32 @@
             </div>
         </div>
     </div>
+    <!-- Stripe Payment Modal -->
+    <div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="stripeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="stripeModalLabel">Stripe Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('payment.processStripe') }}" method="POST" id="stripe-payment-form">
+                        @csrf
+                        <div id="card-element">
+                            <!-- Stripe Element will be inserted here -->
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="amount">Amount to Pay</label>
+                            <input type="number" name="amount" class="form-control" id="amount" min="1"
+                                required>
+                        </div>
+                        <input type="hidden" name="order_id" class="order_id">
+                        <button type="submit" class="btn btn-primary mt-3" id="submit-stripe">Pay with Stripe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Payment Proof Modal End -->
     <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel"
         aria-hidden="true">
@@ -351,6 +396,13 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
+
+                $('.payment-option-modal').click(function() {
+                    $('#paymentOptionModal').modal('show');
+                    var orderId = $(this).data('order-id');
+                    $('.order_id').val(orderId);
+                });
+
                 $('.view-order-btn').click(function() {
                     var orderId = $(this).data('order-id');
                     $.ajax({
@@ -433,12 +485,50 @@
                         }
                     });
                 });
-                $('.upload-payment-proof').click(function(e) {
+
+                $('#uploadProofButton').click(function(e) {
                     e.preventDefault();
-                    var orderId = $(this).data('order-id');
-                    $('.order_id').val(orderId);
+                    $('#paymentOptionModal').modal('hide');
                     $('#paymentProofModal').modal('show');
                 });
+
+                $('#stripeButton').click(function() {
+                    $('#paymentOptionModal').modal('hide');
+                    $('#paymentModal').modal('hide');
+                    $('#stripeModal').modal('show');
+                    initializeStripe();
+                });
+
+                function initializeStripe() {
+                    const stripe = Stripe(
+                        'pk_test_51PdpVRG5pw69iY75jmpT3xfAzYr38y3ilgVPlKKPnCvlXZcbBQ6Xfx0Bm4BmnADCIZbM1oLk8bykDt8JR3P1lFQs00VhyGESI9'
+                    );
+                    const elements = stripe.elements();
+                    const cardElement = elements.create('card');
+                    cardElement.mount('#card-element');
+
+                    const stripeForm = document.getElementById('stripe-payment-form');
+                    stripeForm.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+
+                        const {
+                            token,
+                            error
+                        } = await stripe.createToken(cardElement);
+
+                        if (error) {
+                            console.error(error.message);
+                            document.getElementById('card-errors').textContent = error.message;
+                        } else {
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.setAttribute('type', 'hidden');
+                            hiddenInput.setAttribute('name', 'stripeToken');
+                            hiddenInput.setAttribute('value', token.id);
+                            stripeForm.appendChild(hiddenInput);
+                            stripeForm.submit();
+                        }
+                    });
+                }
                 $('.assign-vendor-btn').click(function(e) {
                     e.preventDefault();
                     var orderId = $(this).data('order-id');
@@ -447,51 +537,66 @@
                 });
 
                 $('.view-payment-proof').click(function(e) {
-    e.preventDefault();
-    var orderId = $(this).data('order-id');
+                    e.preventDefault();
+                    var orderId = $(this).data('order-id');
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
 
-    $.ajax({
-        url: "{{ route('view-payment-proofs') }}",
-        type: 'POST',
-        data: {
-            order_id: orderId
-        },
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-            $('#payment-proofs-body').empty(); // Clear previous entries
+                    $.ajax({
+                        url: "{{ route('view-payment-proofs') }}",
+                        type: 'POST',
+                        data: {
+                            order_id: orderId
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            console.log(response);
+                            $('#payment-proofs-body').empty(); // Clear previous entries
 
-            if (response.paymentProofs.length > 0) {
-                $('#no-proofs-message').hide(); // Hide message if proofs exist
+                            if (response.paymentProofs.length > 0) {
+                                $('#no-proofs-message').hide(); // Hide message if proofs exist
 
-                $.each(response.paymentProofs, function(index, proof) {
-                    var row = '<tr>' +
-                        '<td>' + proof.transaction_id + '</td>' +
-                        '<td>' + proof.amount + '</td>' +
-                        '<td><a class="btn btn-primary" href="' + '{{ asset('payment_proofs/') }}/' + proof.payment_proof + '" target="_blank">View Proof</a></td>' +
-                        '</tr>';
+                                $.each(response.paymentProofs, function(index, proof) {
+                                    var viewProofButton = '';
 
-                    $('#payment-proofs-body').append(row);
+                                    // Check if payment_proof is not null
+                                    if (proof.payment_proof) {
+                                        viewProofButton =
+                                            '<a class="btn btn-primary" href="' +
+                                            '{{ asset('payment_proofs/') }}/' + proof
+                                            .payment_proof +
+                                            '" target="_blank">View Proof</a>';
+                                    } else {
+                                        viewProofButton = 'Not Uplaoded';
+                                    }
+
+                                    var row = '<tr>' +
+                                        '<td>' + proof.transaction_id + '</td>' +
+                                        '<td>' + proof.amount + '</td>' +
+                                        '<td>' + proof.payment_type + '</td>' +
+                                        '<td>' + viewProofButton + '</td>' +
+                                        '</tr>';
+
+                                    $('#payment-proofs-body').append(row);
+                                });
+
+                            } else {
+                                $('#no-proofs-message').show(); // Show message if no proofs exist
+                            }
+
+                            $('#order-id-label').text(
+                                orderId); // Set the order ID in the modal title
+                            $('#view-payment-proof').modal('show'); // Show the modal
+                        },
+                        error: function() {
+                            flasher.error('Error fetching payment proof details.');
+                        }
+                    });
                 });
-            } else {
-                $('#no-proofs-message').show(); // Show message if no proofs exist
-            }
-
-            $('#order-id-label').text(orderId); // Set the order ID in the modal title
-            $('#view-payment-proof').modal('show'); // Show the modal
-        },
-        error: function() {
-            flasher.error('Error fetching payment proof details.');
-        }
-    });
-});
-
 
                 $('.update-item-progress-btn').click(function() {
                     var orderId = $(this).data('order-id');
@@ -563,7 +668,9 @@
                         }
                     });
                 });
+
             });
         </script>
+        <script src="https://js.stripe.com/v3/"></script>
     @endpush
 @endsection

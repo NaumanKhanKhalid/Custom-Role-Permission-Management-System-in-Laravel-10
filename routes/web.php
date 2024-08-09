@@ -9,8 +9,9 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\Frontend\ChatController as FrontendChatController;
-use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
+use App\Http\Controllers\Frontend\FrontendChatController;
+
+use App\Http\Controllers\Frontend\FrontendOrderController;
 use App\Http\Controllers\Frontend\PackageController as FrontendPackageController;
 use App\Http\Controllers\Frontend\ServiceController as FrontendServiceController;
 use App\Http\Controllers\BackendOrderController;
@@ -139,6 +140,8 @@ Route::middleware('auth.check')->group(function () {
 
         Route::post('payment-proof-submit', [PaymentController::class, 'uploadProof'])->name('payment.proof.submit');
         Route::post('view-payment-proofs', [PaymentController::class, 'viewUploadedProofs'])->name('view-payment-proofs');
+        Route::post('process-stripe-payment', [PaymentController::class, 'processStripePayment'])->name('payment.processStripe');
+
 
 
 

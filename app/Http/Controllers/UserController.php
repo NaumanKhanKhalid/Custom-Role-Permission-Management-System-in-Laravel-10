@@ -75,11 +75,11 @@ class UserController extends Controller
 
             DB::commit();
 
-            return redirect()->route('users.index')->with('success', 'User created successfully!');
+            return redirect()->route('backend.users.index')->with('success', 'User created successfully!');
         } catch (\Exception $e) {
 
             DB::rollback();
-            return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.');
+            return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.'.$e->getMessage());
         }
     }
 
@@ -133,9 +133,6 @@ class UserController extends Controller
                 $profilePicturePath = 'profile_pictures/' . $imageName;
                 $basicInfoData['profile_picture'] = $profilePicturePath;
             }
-
-            $userBasicInfo = UserBasicInformation::where('user_id', $user->id)->first();
-            $userBasicInfo->update($basicInfoData);
 
             DB::commit();
             return redirect()->route('users.index')->with('success', 'User updated successfully!');

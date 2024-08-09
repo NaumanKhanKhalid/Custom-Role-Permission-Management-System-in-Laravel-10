@@ -3,7 +3,7 @@
 @section('title', 'Reviews')
 
 @section('content')
-    <style>
+       <style>
         /* Enhanced CSS for review cards */
         .review-box {
             background-color: #f9f9f9;
@@ -66,40 +66,6 @@
             border-color: #545b62;
         }
     </style>
-    <section>
-        <div class="container">
-            <div class="row py-5">
-                <div class="col-12">
-                    <h2 class="text-center mb-4">Reviews</h2>
-                    <div id="reviews-container" class="row">
-                        @foreach ($reviews as $review)
-                            <div class="col-md-3 review-item">
-                                <div class="review-box">
-                                    <p>{{ $review->review }}</p>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <h5>{{ $review->service->name }}</h5>
-                                            <h5>{{ $review->user_name }}</h5>
-                                            <span class="title">{{ $review->user_email }}</span>
-                                        </div>
-                                        <div class="rating">
-                                            Rating: {{ $review->rating }} ★
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="text-center mt-4">
-                        @if ($reviews->hasMorePages())
-                            <button id="load-more" class="btn btn-primary">Load More</button>
-                        @endif
-                        <button id="show-less" class="btn btn-secondary" style="display: none;">Show Less</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <style>
         * {
             margin: 0;
@@ -147,6 +113,39 @@
             color: #c59b08;
         }
     </style>
+    <div class="container main-container">
+        <div class="cards">
+            <h2 class="text-center mb-4">Reviews</h2>
+            <div id="reviews-container" class="row">
+                @foreach ($reviews as $review)
+                    <div class="col-md-3 col-sm-6 review-item">
+                        <div class="review-box">
+                            <div class="rating">
+                                @for ($i = 0; $i < $review->rating; $i++)
+                                    <i class="fa-solid fa-star"></i>
+                                @endfor
+                            </div>
+                            <p>{{ $review->review }}</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <h5>{{ $review->service->name }}</h5>
+                                    <h5>{{ $review->user_name }}</h5>
+                                    <span class="title">{{ $review->user_email }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+        <div class="text-center mt-4">
+            <button id="show-less" class="btn btn-secondary" style="display: none;">Show Less</button>
+            @if ($reviews->hasMorePages())
+                <button id="load-more" class="btn btn-primary">Load More</button>
+            @endif
+        </div>
+    </div>
     <section>
         <div class="container">
             <div class="row py-5">
@@ -170,7 +169,7 @@
                             <input type="email" name="user_email" class="form-control" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <label for="rating">Rating:</label>
+                           
                             <div class="rate">
                                 <input type="radio" id="star5" name="rating" value="5" />
                                 <label for="star5" title="5 stars">5 stars</label>
@@ -184,7 +183,7 @@
                                 <label for="star1" title="1 star">1 star</label>
                             </div>
                         </div>
-                        <input type="hidden" name="" id="rating-input">
+                        <input type="hidden" name="rating" id="rating-input">
                         <div class="form-group">
                             <textarea name="review" class="form-control" placeholder="Your Review" required></textarea>
                         </div>
@@ -213,16 +212,17 @@
                     let reviews = response.data;
                     reviews.forEach(review => {
                         let reviewHtml = `
-                            <div class="col-md-3 review-item">
+                            <div class="col-md-3 col-sm-6 review-item">
                                 <div class="review-box">
+                                    <div class="rating">
+                                        ${'★'.repeat(review.rating)}
+                                    </div>
                                     <p>${review.review}</p>
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
+                                            <h5>${review.service.name}</h5>
                                             <h5>${review.user_name}</h5>
                                             <span class="title">${review.user_email}</span>
-                                        </div>
-                                        <div class="rating">
-                                            Rating: ${review.rating} ★
                                         </div>
                                     </div>
                                 </div>

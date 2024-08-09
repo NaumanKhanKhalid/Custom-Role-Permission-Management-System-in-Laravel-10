@@ -40,13 +40,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" name="remember" {{
                                                     old('remember') ? 'checked' : '' }} value="1">
                                                 <span class="custom-control-label">Remember me</span>
                                             </label>
-                                        </div>
+                                        </div> --}}
                                         <div class="submit">
                                             <button class="btn btn-primary btn-block" type="submit">Login</button>
                                         </div>

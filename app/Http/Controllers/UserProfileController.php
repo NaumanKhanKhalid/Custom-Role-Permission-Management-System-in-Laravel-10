@@ -12,7 +12,9 @@ class UserProfileController extends Controller
 {
     public function update(Request $request)
     {
-        $user = Auth::user();
+
+        $user_id = Auth::user()->id;
+        $user = User::find($user_id);
 
         // Validate the request data
         $request->validate([

@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('order_id');
             $table->string('transaction_id');
-            $table->string('payment_proof');
+            $table->string('payment_proof')->nullable();
+            $table->decimal('amount', 10, 2);
+            $table->string('payment_type')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four')->nullable();
             $table->timestamps();
         });
     }
