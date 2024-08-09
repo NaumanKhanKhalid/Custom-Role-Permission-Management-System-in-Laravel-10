@@ -28,6 +28,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+
+            if ($user->status == "Inactive") {
+                Auth::logout();
+                return back()->withInput()->withErrors(['email' => 'Your account is inactive. Please contact support.']);
+            }
+
             if ($user->role->name == 'Client') {
                 return redirect()->route('services.index');
             }
