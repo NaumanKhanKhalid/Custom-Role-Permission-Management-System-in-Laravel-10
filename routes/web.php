@@ -133,7 +133,7 @@ Route::middleware('auth.check')->group(function () {
             Route::get('/{orderId}', [BackendOrderController::class, 'show'])->name('orders.show');
             Route::patch('/{order}/status', [BackendOrderController::class, 'updateStatus'])->name('orders.updateStatus');
             Route::patch('/assign', [BackendOrderController::class, 'assignVendor'])->name('orders.assign');
-            Route::patch('/assign', [BackendOrderController::class, 'assignVendor'])->name('orders.assign');
+            // Route::patch('/assign', [BackendOrderController::class, 'assignVendor'])->name('orders.assign');
             Route::post('/update-progress', [BackendOrderController::class, 'updateProgress'])->name('orders.updateProgress');
         });
         // ========== Orders Module Routes End ==========
@@ -149,6 +149,7 @@ Route::middleware('auth.check')->group(function () {
     });
 
     Route::post('/order/store', [FrontendOrderController::class, 'store'])->name('order.store');
+    Route::post('/order/store/stripe', [FrontendOrderController::class, 'storeStripe'])->name('order.store.stripe');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 

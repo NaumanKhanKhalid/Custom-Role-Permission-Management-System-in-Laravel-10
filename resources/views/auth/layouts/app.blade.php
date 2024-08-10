@@ -14,7 +14,7 @@
     <title>Login</title>
 
     <!--Favicon -->
-    <link rel="icon" href="{{ asset('dashboard-assets/assets/images/brand/favicon.ico')}}" type="image/x-icon">
+    <link rel="icon" href="" type="image/x-icon">
 
     <!-- Bootstrap css -->
     <link href="{{ asset('dashboard-assets/assets/plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet">
@@ -64,7 +64,7 @@
   <script src="{{ asset('vendor/flasher/flasher.min.js') }}"></script>
     <!-- Custom js-->
     <script src="{{ asset('dashboard-assets/assets/js/custom.js') }}"></script>
-   
+
     @if ($errors->any())
         @foreach ($errors->all() as $index => $error)
             <script>

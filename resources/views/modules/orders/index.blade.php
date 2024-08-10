@@ -52,7 +52,6 @@
                                                     'In Progress' => 'badge-info',
                                                     'Rejected' => 'badge-danger',
                                                     'Cancelled' => 'badge-secondary',
-                                                    'Awaiting Payment' => 'badge-warning',
                                                     'Completed' => 'badge-success',
                                                 ];
 
@@ -60,8 +59,7 @@
                                                     'Pending' => ['Approved', 'Rejected'],
                                                     'Approved' => ['Assigned', 'Rejected'],
                                                     'Assigned' => ['In Progress', 'Cancelled'],
-                                                    'In Progress' => ['Cancelled', 'Awaiting Payment'],
-                                                    'Awaiting Payment' => ['Cancelled', 'Completed'],
+                                                    'In Progress' => ['Cancelled', 'Completed'],
                                                     'Completed' => [],
                                                     'Rejected' => [],
                                                     'Cancelled' => [],
@@ -105,24 +103,23 @@
                                                             <i class="feather feather-eye text-primary"></i>
                                                         </a>
 
-                                                        @if ($order->status == 'Awaiting Payment')
+                                                        {{-- @if ($order->status == 'Awaiting Payment')
                                                             <a class="action-btns1 bg-white payment-option-modal"
                                                                 href="javascript:void(0)"
                                                                 data-order-id="{{ $order->id }}"
                                                                 title="Add Payment Proof">
                                                                 <i class="feather feather-upload"></i>
                                                             </a>
-                                                        @endif
-                                                        @if (in_array($order->status, ['Completed', 'Awaiting Payment']))
-                                                            @if (!empty($order->paymentProofs))
-                                                                <a class="action-btns1 bg-white view-payment-proof"
-                                                                    href="javascript:void(0)"
-                                                                    data-order-id="{{ $order->id }}"
-                                                                    title="View Payment Proof">
-                                                                    <i class="feather feather-file-text"></i>
-                                                                </a>
-                                                            @endif
-                                                        @endif
+                                                        @endif --}}
+                                                        {{-- @if (in_array($order->status, ['Completed'])) --}}
+
+                                                        <a class="action-btns1 bg-white view-payment-proof"
+                                                            href="javascript:void(0)" data-order-id="{{ $order->id }}"
+                                                            title="View Payment Proof">
+                                                            <i class="feather feather-file-text"></i>
+                                                        </a>
+
+                                                        {{-- @endif --}}
 
                                                         @if (in_array(Auth::user()->role->name, ['Admin', 'Vendor']))
                                                             <a href="javascript:void(0)"
@@ -151,7 +148,7 @@
                                                                                         data-order-id="{{ $order->id }}"
                                                                                         data-bs-toggle="modal"
                                                                                         data-bs-target="#assignVendorModal">
-                                                                                        {{ $action }}
+                                                                                        Assign
                                                                                     </button>
                                                                                 </li>
                                                                             @else
@@ -253,6 +250,7 @@
                     <div class="modal-body">
                         <p>Select a vendor to assign to this order.</p>
                         <select name="vendor_id" class="form-control">
+                            <option value="" disabled readonly selected>Select Vendor</option>
                             @foreach ($vendors as $vendor)
                                 <option value="{{ $vendor->id }}">
                                     {{ $vendor->first_name . ' ' . $vendor->last_name }}
@@ -486,18 +484,7 @@
                     });
                 });
 
-                $('#uploadProofButton').click(function(e) {
-                    e.preventDefault();
-                    $('#paymentOptionModal').modal('hide');
-                    $('#paymentProofModal').modal('show');
-                });
 
-                $('#stripeButton').click(function() {
-                    $('#paymentOptionModal').modal('hide');
-                    $('#paymentModal').modal('hide');
-                    $('#stripeModal').modal('show');
-                    initializeStripe();
-                });
 
                 function initializeStripe() {
                     const stripe = Stripe(

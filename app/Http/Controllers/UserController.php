@@ -36,11 +36,18 @@ class UserController extends Controller
             $query->onlyTrashed();
         }
 
-        $users = $query->get();
-        $totalUsersCount = User::count();
+        $users = $query->where('role_id', '!=', 1)->get();
+        $totalUsersCount = User::where('role_id', '!=', 1)->count();
         $activeUsersCount = User::where('status', 'Active')->count();
-        $inactiveUsersCount = User::where('status', 'Inactive')->count();
-        $trashedUsersCount = User::onlyTrashed()->count();
+        // Count inactive users excluding the currently authenticated user
+        $inactiveUsersCount = User::where('status', 'Inactive')
+            ->where('role_id', '!=', 1)
+            ->count();
+
+        // Count trashed users excluding the currently authenticated user
+        $trashedUsersCount = User::onlyTrashed()
+            ->where('role_id', '!=', 1)
+            ->count();
 
         return view('modules.users.index', compact('roles', 'users', 'totalUsersCount', 'activeUsersCount', 'inactiveUsersCount', 'trashedUsersCount'));
     }
@@ -79,7 +86,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
 
             DB::rollback();
-            return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.'.$e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Failed to create users. Please try again.' . $e->getMessage());
         }
     }
 

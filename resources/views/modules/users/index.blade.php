@@ -116,7 +116,7 @@
                                             <select name="status" class="form-control custom-select select2"
                                                 data-placeholder="Select Status">
                                                 <option label="Select Status"></option>
-                                                <option value="Acive">Active</option>
+                                                <option value="Active">Active</option>
                                                 <option value="Inactive">Inactive</option>
                                             </select>
                                         </div>

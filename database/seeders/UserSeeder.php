@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
 
         $users = [
             [
-                'first_name' => 'Noman',
-                'last_name' => 'Khan',
+                'first_name' => 'Admin',
+                'last_name' => '',
                 'profile_picture' => "",
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('123'),
@@ -29,11 +29,33 @@ class UserSeeder extends Seeder
                 'role_id' => $adminRole->id,
 
 
-            ],[
-                'first_name' => 'John',
-                'last_name' => 'Doe',
+            ], [
+                'first_name' => 'Jon',
+                'last_name' => 'Jones',
                 'profile_picture' => "",
-                'email' => 'vendor@gmail.com',
+                'email' => 'jonjones@gmail.com',
+                'password' => Hash::make('123'),
+                'status' => 'Active',
+                'created_at' => Carbon::now(),
+                'role_id' => $vendorRole->id,
+
+
+            ], [
+                'first_name' => 'Muhammad',
+                'last_name' => 'Hassan',
+                'profile_picture' => "",
+                'email' => 'mhassan@gmail.com',
+                'password' => Hash::make('123'),
+                'status' => 'Active',
+                'created_at' => Carbon::now(),
+                'role_id' => $vendorRole->id,
+
+
+            ], [
+                'first_name' => 'Sara',
+                'last_name' => 'Khan',
+                'profile_picture' => "",
+                'email' => 'sarakhan@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
@@ -43,9 +65,20 @@ class UserSeeder extends Seeder
             ],
             [
                 'first_name' => 'Mick',
-                'last_name' => 'blue',
+                'last_name' => 'Blue',
                 'profile_picture' => "",
-                'email' => 'client@gmail.com',
+                'email' => 'mickblue@gmail.com',
+                'password' => Hash::make('123'),
+                'status' => 'Active',
+                'created_at' => Carbon::now(),
+                'role_id' => $clientRole->id,
+
+            ],
+            [
+                'first_name' => 'Baz',
+                'last_name' => 'Shah',
+                'profile_picture' => "",
+                'email' => 'bazshah@gmail.com',
                 'password' => Hash::make('123'),
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
