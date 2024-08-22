@@ -10,8 +10,6 @@
                         <div class="card__box">
                             <div>
                                 <div class="card__icon">
-
-
                                     <i class="{{ $service->icon }}" style="font-size: 100px"></i>
                                 </div>
                                 <div class="mt-4">
@@ -26,13 +24,10 @@
                             <div class="w-100 d-flex align-items-center justify-content-center mt-3">
                                 <a href="{{ route('packages.index', ['service' => $service->id]) }}"
                                     class="btn__purple">Packages</a>
-                                <!-- <a href="javascript::void()" class="btn__packages">Read More</a> -->
                             </div>
                         </div>
                     </div>
                 @endforeach
-
-
             </div>
         </div>
         </div>

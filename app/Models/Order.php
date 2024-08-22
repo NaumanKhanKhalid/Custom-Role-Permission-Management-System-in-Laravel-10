@@ -4,15 +4,15 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Payment;
+use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\OrderItem; // Ensure this line is included
 
 class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'assigned_to', 'status', 'total_price','total_progress_percentage'];
+    protected $fillable = ['user_id', 'assigned_to', 'status', 'total_price', 'total_progress_percentage'];
 
     public function client()
     {
@@ -33,3 +33,4 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 }
+

@@ -157,6 +157,7 @@
                                                                             aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
+                                                                        
                                                                         <textarea class="form-control b-none" name="description" id="editServiceDescription">  {{ $service->description }} </textarea>
                                                                     </div>
                                                                 </div>
@@ -295,6 +296,7 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label">Description:</label>
                                     <textarea class="form-control" name="description" required></textarea>
+                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -349,6 +351,7 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label">Description:</label>
                                     <textarea class="form-control" name="description" id="editServiceDescription" required></textarea>
+
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -389,9 +392,10 @@
                     $('#editSelectedIcon').attr('class', event.iconpickerValue);
                 });
 
+                
                 $('.edit-service').on('click', function() {
+                    
                     var serviceId = $(this).data('id');
-
                     $.ajax({
                         url: "{{ route('backend.service.edit', ':serviceId') }}".replace(':serviceId',
                             serviceId),

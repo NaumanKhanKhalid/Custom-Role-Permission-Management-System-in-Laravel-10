@@ -11,7 +11,6 @@ class PackageSeeder extends Seeder
     public function run()
     {
         $packages = [
-
             [
                 'service_id' => 1,
                 'name' => 'Google Services',
@@ -19,9 +18,8 @@ class PackageSeeder extends Seeder
                 'status' => 'Active',
                 'created_at' => Carbon::now(),
             ]
-
         ];
-
+        
         Package::insert($packages);
     }
 }

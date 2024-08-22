@@ -110,24 +110,12 @@ class UserController extends Controller
             $userData = [
                 'email' => $request->input('email'),
                 'status' => $request->input('status'),
-            ];
-
-            if ($request->filled('password')) {
-                $userData['password'] = bcrypt($request->input('password'));
-            }
-
-            $user->update($userData);
-
-            $basicInfoData = [
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
-                'dob' => Carbon::parse($request->input('dob'))->format('Y-m-d'),
-                'address' => $request->input('address'),
-                'phone' => $request->input('phone'),
             ];
 
             if ($request->hasFile('profile_picture')) {
-                $userImage = $user->basic_info->profile_picture;
+                $userImage = $user->profile_picture;
                 if ($userImage) {
                     $imagePath = public_path($userImage);
                     if (file_exists($imagePath)) {
@@ -138,14 +126,20 @@ class UserController extends Controller
                 $imageName = time() . '.' . $image->getClientOriginalExtension();
                 $image->move(public_path('profile_pictures'), $imageName);
                 $profilePicturePath = 'profile_pictures/' . $imageName;
-                $basicInfoData['profile_picture'] = $profilePicturePath;
+                $userData['profile_picture'] = $profilePicturePath;
             }
+
+            if ($request->filled('password')) {
+                $userData['password'] = bcrypt($request->input('password'));
+            }
+
+            $user->update($userData);
 
             DB::commit();
             return redirect()->route('users.index')->with('success', 'User updated successfully!');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->withInput()->with('error', 'Failed to update users. Please try again.');
+            return redirect()->back()->withInput()->with('error', 'Failed to update users. Please try again.'.$e->getMessage());
         }
     }
 
@@ -174,7 +168,8 @@ class UserController extends Controller
     {
         $user = User::withTrashed()->findOrFail($id);
         $user->forceDelete();
-        return redirect()->route('users.index')->with('success', 'User permanently deleted.');
+        return redirect()->back()->with('success', 'User permanently deleted.');
+
     }
 
     public function restoreUser($id)

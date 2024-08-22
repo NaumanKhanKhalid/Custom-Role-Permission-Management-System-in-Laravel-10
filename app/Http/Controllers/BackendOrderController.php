@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Package;
 
 class BackendOrderController extends Controller
 {
@@ -22,36 +23,48 @@ class BackendOrderController extends Controller
             $orders = $orders->where('user_id', $user->id)->get();
         }
 
-        // dd($orders);
         $vendors = User::where('role_id', '2')->where('status', "Active")->get();
         return view('modules.orders.index', compact('orders', 'vendors'));
     }
     public function show($id)
-    {
-        $order = Order::with(['orderItems.item.package', 'orderItems.item.package.service'])->find($id);
-        if (!$order) {
-            return response()->json(['error' => 'Order not found'], 404);
-        }
-        $items = $order->orderItems->map(function ($orderItem) {
+{
+    $order = Order::with('orderItems.item')->find($id);
+
+    if (!$order) {
+        return response()->json([
+            'error' => 'Order not found'
+        ], 404);
+    }
+
+    $service_name = null;
+    $package_name = null;
+
+    $items = $order->orderItems->map(function ($orderItem) use (&$service_name, &$package_name) {
+        if ($orderItem->item_type == 'item') {
             return [
                 'name' => $orderItem->item->name,
                 'price' => $orderItem->price,
                 'progress_percentage' => $orderItem->progress_percentage,
                 'id' => $orderItem->id,
             ];
-        });
+        } else if ($orderItem->item_type == 'package') {
+            $package = Package::with('service')->find($orderItem->item_id);
+            if ($package) {
+                $package_name = $package->name;
+                $service_name = $package->service->name;
+            }
+            return null; // Return null for packages to filter them out later
+        }
+    })->filter()->values();
 
-        $serviceName = $order->orderItems->first()->item->package->service->name;
-        $packageName = $order->orderItems->first()->item->package->name;
-
-        return response()->json([
-            'order' => [
-                'service_name' => $serviceName,
-                'package_name' => $packageName,
-            ],
-            'items' => $items,
-        ]);
-    }
+    return response()->json([
+        'order' => [
+            'service_name' => $service_name,
+            'package_name' => $package_name,
+        ],
+        'items' => $items
+    ]);
+}
 
     public function updateStatus(Request $request, Order $order)
     {
@@ -93,14 +106,11 @@ class BackendOrderController extends Controller
         $itemIds = $request->item_ids;
         $orderId = $request->order_id;
 
-        // Retrieve the order
         $order = Order::findOrFail($orderId);
 
-        // Calculate total progress for the order based on item percentages
         $totalProgress = count($progressPercentages) > 0 ? array_sum($progressPercentages) / count($progressPercentages) : 0;
 
-        // Update order's progress percentage
-        $order->progress_percentage = $totalProgress;
+        $order->total_progress_percentage = $totalProgress;
         $order->save();
 
         // Update each item's progress percentage

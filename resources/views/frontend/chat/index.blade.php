@@ -290,7 +290,7 @@
 
         function updateUnreadIndicator(count) {
 
-           
+
             var unreadIndicator = $('#unreadIndicator');
             if (count > 0 && !$('#chatContainer').is(':visible')) {
                 unreadIndicator.text(count);
@@ -329,7 +329,7 @@
                 storeGuestId(guestId);
             }
 
-            setInterval(checkForNewMessages, 1000);
+            setInterval(checkForNewMessages, 100000);
         });
     </script>
 @endpush

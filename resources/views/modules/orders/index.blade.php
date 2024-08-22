@@ -77,12 +77,12 @@
                                                 </td>
                                                 <td class="align-middle" style="width: 14%; ">
                                                     <div class="float-end">
-                                                        <h6 class="mb-2 ms-4 fw-semibold">{{ $order->progress_percentage }}%
+                                                        <h6 class="mb-2 ms-4 fw-semibold">{{ $order->total_progress_percentage }}%
                                                         </h6>
                                                     </div>
                                                     <div class="progress progress-sm mb-0 mt-1">
                                                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                            style="width: {{ $order->progress_percentage }}%"></div>
+                                                            style="width: {{ $order->total_progress_percentage }}%"></div>
                                                     </div>
 
                                                 </td>
@@ -610,13 +610,10 @@
                                     item.price + '">' +
                                     '</div>' +
                                     '<div class="col-md-4">' +
-                                    '<input type="hidden" name="item_ids[]" value="' + item
-                                    .id + '">' +
+                                    '<input type="hidden" name="item_ids[]" value="' + item.id + '">' +
                                     '<div id="slider-' + item.id +
                                     '" class="noUi-target noUi-ltr noUi-horizontal noUi-txt-dir-ltr"></div>' +
-                                    '<input type="hidden" id="progress-percentage-' + item
-                                    .id + '" name="progress_percentage[]" value="' + item
-                                    .progress_percentage + '">' +
+                                    '<input type="hidden" id="progress-percentage-' + item.id + '" name="progress_percentage[]" value="' + item.progress_percentage + '">' +
                                     '<div id="slider-value-' + item.id +
                                     '" class="value-display">' + item.progress_percentage +
                                     '%</div>' +

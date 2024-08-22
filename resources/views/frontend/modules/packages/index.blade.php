@@ -8,7 +8,7 @@
     <section id="custom-form">
         <div class="container mt-3">
             <div class="setup-business-account">
-                <h2>Service Name</h2>
+                <h2>{{$service->name}}</h2>
                 <div class="accordion">
                     @foreach ($packages as $package)
                         <div class="quest-section">

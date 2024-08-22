@@ -59,8 +59,9 @@ class PackageController extends Controller
 
         $package->items()->createMany($items);
 
-        return redirect()->route('packages.index')->with('success', 'Package created successfully.');
-    }
+        return redirect()->route('backend.packages.index', ['service' => $package->service_id])
+        ->with('success', 'Package created successfully.');
+        }
 
     public function update(Request $request, Package $package)
     {
@@ -94,10 +95,12 @@ class PackageController extends Controller
 
 
 
-            return redirect()->route('packages.index')->with('success', 'Package updated successfully!');
+            return redirect()->route('backend.packages.index', ['service' => $package->service_id])
+            ->with('success', 'Package created successfully.');
+            
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->withInput()->with('error', 'Failed to update package. Please try again.');
+            return redirect()->back()->withInput()->with('error', 'Failed to update package. Please try again.'.$e->getMessage());
         }
     }
 
